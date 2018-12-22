@@ -47,20 +47,23 @@ __code uint16_t __at (_CONFIG) __configword =
 
 static void init(void) {
   // configure registers
-  TRISIO = 0;                  // all GPIOs are output
-  ANSEL  = 0;                  // no analog input
-  OPTION_REGbits.T0CS   = 0;   // clear to enable timer mode
-  OPTION_REGbits.PSA    = 0;   // clear to assign prescaler to TMRO
-  OPTION_REGbits.PS2    = 0;   // 010 @ 4Mhz = 2.048 mS
-  OPTION_REGbits.PS1    = 1;  
-  OPTION_REGbits.PS0    = 0;  
+  __asm__ ("CLRWDT");            // clear WDT even if WDT is disabled
+  ANSEL  = 0;                    // no analog input
+  TRISIO = 0;                    // all GPIOs are output
+  CMCON  = 0x07;                 // disable comparator for GP0-GP2
+  OPTION_REGbits.NOT_GPPU = 1;   // no pullups
+  OPTION_REGbits.T0CS     = 0;   // clear to enable timer mode
+  OPTION_REGbits.PSA      = 0;   // clear to assign prescaler to TMRO
+  OPTION_REGbits.PS2      = 0;   // 010 @ 4Mhz = 2.048 mS
+  OPTION_REGbits.PS1      = 1;
+  OPTION_REGbits.PS0      = 0;
 
-  INTCON = 0;                  // clear interrupt flag bits
-  TMR0 = 0;                    // clear the value in TMR0
-  INTCONbits.GIE  = 1;         // global interrupt enable
-  INTCONbits.T0IE = 1;         // TMR0 overflow interrupt enable
+  INTCON                  = 0;   // clear interrupt flag bits
+  TMR0                    = 0;   // clear the value in TMR0
+  INTCONbits.GIE          = 1;   // global interrupt enable
+  INTCONbits.T0IE         = 1;   // TMR0 overflow interrupt enable
 
-  GPIObits.GP5 = 0;            // initial value of GP5
+  GPIObits.GP5            = 0;   // initial value of GP5
 }
 
 ////////////////////////////////////////////////////////////////////////
