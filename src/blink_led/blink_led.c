@@ -22,8 +22,10 @@ void delay(uint16_t iterations) {
 void main(void) {
   // Load calibration
   __asm
+    bsf  STATUS, RP0
     call 0x3ff    ; Wert auslesen
     movwf OSCCAL  ; Wert setzen
+    bcf  STATUS, RP0
   __endasm;
 
   TRISIO = 0;
