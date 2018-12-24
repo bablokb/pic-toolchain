@@ -13,7 +13,7 @@
 // no brown out
 
 __code uint16_t __at (_CONFIG) __configword = 
-  _MCLRE_ON & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
+  _MCLRE_ON & _PWRTE_OFF & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -43,10 +43,17 @@ __code uint16_t __at (_CONFIG) __configword =
 */
 
 ////////////////////////////////////////////////////////////////////////
+// globals
+
+static volatile uint8_t counter = 0;
+static volatile char    on      = 0;
+
+////////////////////////////////////////////////////////////////////////
 // Intialize registers
 
 static void init(void) {
   // configure registers
+
   __asm__ ("CLRWDT");            // clear WDT even if WDT is disabled
   ANSEL  = 0;                    // no analog input
   TRISIO = 0;                    // all GPIOs are output
@@ -58,19 +65,13 @@ static void init(void) {
   OPTION_REGbits.PS1      = 1;
   OPTION_REGbits.PS0      = 0;
 
+  GPIObits.GP5            = 0;   // initial value of GP5
+
   INTCON                  = 0;   // clear interrupt flag bits
   TMR0                    = 0;   // clear the value in TMR0
-  INTCONbits.GIE          = 1;   // global interrupt enable
   INTCONbits.T0IE         = 1;   // TMR0 overflow interrupt enable
-
-  GPIObits.GP5            = 0;   // initial value of GP5
+  INTCONbits.GIE          = 1;   // global interrupt enable
 }
-
-////////////////////////////////////////////////////////////////////////
-// globals
-
-static volatile uint8_t counter = 0;
-static volatile char    on      = 0;
 
 ////////////////////////////////////////////////////////////////////////
 // Interrupt service routine
@@ -94,8 +95,10 @@ static void isr(void) __interrupt 0 {
 void main(void) {
   // Load calibration
   __asm
-    call 0x3ff    ; read value
-    movwf OSCCAL  ; set OSCCAL
+    bsf  STATUS, RP0
+    call 0x3ff    ; Wert auslesen
+    movwf OSCCAL  ; Wert setzen
+    bcf  STATUS, RP0
   __endasm;
 
   init();
