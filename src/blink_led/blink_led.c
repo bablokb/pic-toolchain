@@ -1,23 +1,32 @@
+// --------------------------------------------------------------------------
+// Sample project blink_led
+//
+// Code copied and modified from https://github.com/diegoherranz/sdcc-examples
+//
+// --------------------------------------------------------------------------
+
 #define NO_BIT_DEFINES
 #include <pic12f675.h>
 #include <stdint.h> 
 
-// Kompilieren mit:
+// compile with:
 // sdcc --use-non-free -mpic14 -p12f675 blink_led.c
 
-// MCLR ein, Power on Timer, kein WDT, int-Oscillator, 
-// kein Brown out
+// MCLR on, Power on Timer, no WDT, int-oscillator, no brown out
 
 __code uint16_t __at (_CONFIG) __configword = 
   _MCLRE_ON & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
 
-// Unkalibrierte Verzögerung
+// --- uncalibrated delay   --------------------------------------------------
+
 void delay(uint16_t iterations) {
   uint16_t i;
   for (i = 0; i < iterations; i++) {
-    __asm nop __endasm;   // NOP, damit der Kompiler die Schleife nicht wegoptimiert
+    __asm nop __endasm;       // add a no-op to prevent removal by optimization
   }
 }
+
+// --- main program   --------------------------------------------------------
 
 void main(void) {
   // Load calibration
