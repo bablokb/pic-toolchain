@@ -14,8 +14,8 @@
 #include <pic12f675.h>
 #include <stdint.h> 
 
-// compile with:
-// sdcc --use-non-free -mpic14 -p12f675 quartz4MHz.asm blink_led_quartz4MHz.c
+// build with:
+// make build
 
 // MCLR on, Power on Timer, no WDT, int-oscillator, 
 // no brown out
