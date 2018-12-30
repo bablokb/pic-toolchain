@@ -39,6 +39,6 @@ flash: $(PROJECT).hex
 	pk2cmd -Ppic$(MODEL) -X -M -F $(PROJECT).hex
 
 clean:
-	@rm -f *.o *.cod *.lst $(PROJECT).asm $(EXTRA_CLEAN)
+	@rm -f *.o *.cod *.lst *.map *.hex $(PROJECT).asm $(EXTRA_CLEAN)
 
 
