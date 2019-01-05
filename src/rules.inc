@@ -10,7 +10,8 @@
 LIBDIR=/usr/local/share/sdcc/lib/pic14
 LIBDIR_NONFREE=/usr/local/share/sdcc/non-free/lib/pic14
 LIBS=libsdcc.lib pic$(MODEL).lib
-OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM))
+OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM)) \
+                  $(patsubst %.c,%.o,$(EXTRA_C))
 
 # --- pattern  -------------------------------------------------------------
 
