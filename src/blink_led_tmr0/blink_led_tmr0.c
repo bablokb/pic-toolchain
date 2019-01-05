@@ -103,5 +103,6 @@ void main(void) {
 
   init();
   while (1) {
+    // don't sleep here, because sleep deactivates timer-interrupt
   }
 }
