@@ -47,7 +47,7 @@ static void init(void) {
 // --- main program   --------------------------------------------------------
 
 void main(void) {
-  const unsigned char msg[] = "Hallo\n";
+  const unsigned char msg[] = "Hallo\r\n";
   // Load calibration
   __asm
     bsf  STATUS, RP0
@@ -58,9 +58,11 @@ void main(void) {
 
   init();
   while (1) {
+    // send message
     for (unsigned char *p = msg; *p; p++) {
       softuart_transmit(*p);
     }
+    // wait one second
     maxitime(4);
   }
 }
