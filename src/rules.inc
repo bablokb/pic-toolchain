@@ -7,8 +7,16 @@
 #
 # --------------------------------------------------------------------------
 
-LIBDIR=/usr/local/share/sdcc/lib/pic14
-LIBDIR_NONFREE=/usr/local/share/sdcc/non-free/lib/pic14
+default:
+	@echo "make build: create $(PROJECT).hex"
+	@echo "make flash: build and flash $(PROJECT).hex to PIC"
+	@echo "make clean: remove intermediate files"
+
+# --- configuration   ------------------------------------------------------
+
+SDCC_ROOT=/usr/local/share/sdcc
+LIBDIR=$(SDCC_ROOT)/lib/$(ARCH)
+LIBDIR_NONFREE=$(SDCC_ROOT)/non-free/lib/$(ARCH)
 LIBS=libsdcc.lib pic$(MODEL).lib
 OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM)) \
                   $(patsubst %.c,%.o,$(EXTRA_C))
@@ -29,17 +37,13 @@ $(PROJECT).hex: $(OBJS)
 
 .PH0NY: flash clean
 
-default:
-	@echo "make build: create $(PROJECT).hex"
-	@echo "make flash: build and flash hex-file to PIC"
-	@echo "make clean: remove intermediate files"
-
 build: $(PROJECT).hex
 
 flash: $(PROJECT).hex
 	pk2cmd -Ppic$(MODEL) -X -M -F $(PROJECT).hex
 
 clean:
-	@rm -f *.o *.cod *.lst *.map *.hex $(PROJECT).asm $(EXTRA_CLEAN)
+	@rm -f *.o *.cod *.lst *.map *.hex $(PROJECT).asm \
+                         $(patsubst %.c,%.asm,$(EXTRA_C)) $(EXTRA_CLEAN)
 
 
