@@ -50,8 +50,12 @@ static void init(void) {
 // Interrupt service routine
 
 static void isr(void) __interrupt 0 {
+  unsigned char p;
   if (INTCONbits.INTE && INTCONbits.INTF) {
-    softuart_transmit(softuart_receive());
+    p = softuart_receive();
+    softuart_print("char: ");
+    softuart_transmit(p);
+    softuart_transmit('\n');
     INTCONbits.INTF = 0;    // Clear GP2/INT interrupt flag
   }
 }
