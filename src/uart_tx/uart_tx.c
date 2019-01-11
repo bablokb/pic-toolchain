@@ -47,7 +47,7 @@ static void init(void) {
 // --- main program   --------------------------------------------------------
 
 void main(void) {
-  const unsigned char msg[] = "Hallo\r\n";
+  const unsigned char msg[] = "Hallo\n";
   // Load calibration
   __asm
     bsf  STATUS, RP0
