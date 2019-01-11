@@ -38,5 +38,6 @@
 void          softuart_init(void);
 unsigned char softuart_receive(void);
 void          softuart_transmit(const unsigned char);
+void          softuart_print(const unsigned char*);
 
 #endif

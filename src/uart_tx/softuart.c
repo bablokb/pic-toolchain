@@ -82,3 +82,11 @@ void softuart_transmit(const unsigned char DataValue) {
   UART_TX = 1;
   delay_bit();
 }
+
+// --------------------------------------------------------------------------
+
+void softuart_print(const unsigned char* string) {
+  for (unsigned char *p = string; *p; p++) {
+    softuart_transmit(*p);
+  }
+}
