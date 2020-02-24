@@ -20,12 +20,6 @@ but it could also be a RTC-clock (alarm-pin), or e.g. a motion-sensor.
 Note that the program `rpi_mosfet_on_off.c` supports two external signals.
 The default pin-configuration can be changed within the program:
 
- PIN_POWER  GPIObits.GP5
- PIN_PI_OUT GPIObits.GP4
- PIN_SIG2   GPIObits.GP2
- PIN_SIG1   GPIObits.GP1
- PIN_PI_IN  GPIObits.GP0
-
   - GP0: PIN_PI_IN (connected to the Pi, same pin as in the gpio-poweroff
     overlay)
   - GP1: PIN_SIG1 (first external signal)
