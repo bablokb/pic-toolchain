@@ -2,11 +2,11 @@
 // Use the PIC to turn a Raspberry Pi on or off via a mosfet.
 // 
 // This project uses the following pins:
-//  - PIN_POWER  (GP5): attach to gate of mosfet to turn power on or off
-//  - PIN_PI_OUT (GP4): request shutdown from Pi
-//  - PIN_SIG1   (GP1): external on/off signal (e.g. from button)
-//  - PIN_SIG2   (GP2): external on/off signal (e.g. from button)
-//  - PIN_PI_IN  (GP0): Pi confirms shutdown (PIC can turn off power)
+//  - PIN_POWER   (GP5): attach to gate of mosfet to turn power on or off
+//  - PIN_SIG1    (GP4): external on/off signal (e.g. from button)
+//  - PIN_SIG2    (GP2): external on/off signal (e.g. from button)
+//  - PIN_TO_PI   (GP1): request shutdown from Pi
+//  - PIN_FROM_PI (GP0): Pi confirms shutdown (PIC can turn off power)
 //
 // build with:
 //   make build
@@ -23,14 +23,11 @@
 #include <stdint.h> 
 #include "quarz4MHz.h"
 
-#define PIN_POWER  GPIObits.GP5
-#define PIN_PI_OUT GPIObits.GP4
-#define PIN_SIG2   GPIObits.GP2
-#define PIN_SIG1   GPIObits.GP1
-#define PIN_PI_IN  GPIObits.GP0
-
-#define POWER_ON  1
-#define POWER_OFF 0
+#define PIN_POWER   GPIObits.GP5
+#define PIN_SIG1    GPIObits.GP4
+#define PIN_SIG2    GPIObits.GP2
+#define PIN_TO_PI   GPIObits.GP1
+#define PIN_FROM_PI GPIObits.GP0
 
 ////////////////////////////////////////////////////////////////////////
 // MCLR on, Power on Timer, no WDT, int-Oscillator, 
@@ -45,16 +42,18 @@ __code uint16_t __at (_CONFIG) __configword =
 static void init(void) {
   // configure registers
   __asm__ ("CLRWDT");             // clear WDT even if WDT is disabled
-  TRISIO    = 0x07;               // GP5, GP4 are output
+  TRISIO    = 0b010101;           // GP4, GP2, GP0 are input
   ANSEL     = 0;                  // no analog input
   CMCON     = 0x07;               // disable comparator for GP0-GP2
-  WPU       = 0x07;               // weak pullups enable on GP0-2
+  WPU       = 0b010100;           // weak pullups enable on GP2, GP4
+  IOC       = 0b010101;           // IOC on GP0, GP2, GP4
 
   INTCON                  = 0;    // clear interrupt flag bits
-  OPTION_REGbits.INTEDG   = 1;    // IOC rising edge
-  OPTION_REGbits.NOT_GPPU = 1;    // enable pullups
-  IOC                     = 0x07; // IOC on GP0-2
+  OPTION_REGbits.NOT_GPPU = 0;    // enable pullups
   GPIO                    = 0;    // initial value of GPIOs
+  PIN_TO_PI               = 1;    //  except PIN_TO_PI
+  PIN_POWER               = 0;    //  and power
+  INTCONbits.GPIE         = 1;    // enable IOC
   INTCONbits.GIE          = 1;    // global interrupt enable
 }
 
@@ -66,21 +65,19 @@ static void init(void) {
 // Interrupt service routine
 
 static void isr(void) __interrupt 0 {
-  if (INTCONbits.GPIF) {
-    INTCON = 0;             // clear interrupt flags
-    INTCONbits.GPIF = 0;    // clear IOC interrupt flag
-    if (PIN_SIG1|PIN_SIG2) {
-      if (PIN_POWER) {
-        // power is on, signal shutdown to Pi
-        PIN_PI_OUT = 1;
-      } else {
-        // power is off, turn power on
-        PIN_POWER  = 1;
+  if (INTCONbits.GPIF) {                  // interrupt-on-change
+    if (!PIN_SIG1||!PIN_SIG2) {           // SIG1 or SIG2 is low
+      if (PIN_POWER) {                    // power is on:
+        PIN_TO_PI = 0;                    //   signal shutdown to Pi
+      } else {                            // power is off:
+        PIN_POWER = 1;                    //   turn power on
       }
-    } else if (PIN_PI_IN) {
-      PIN_POWER  = 0;  // Pi signals shutdown complete, so turn power off
-      PIN_PI_OUT = 0;  // and restore initial state
+    } else if (PIN_FROM_PI) {             // High: shutdown complete
+      PIN_POWER = 0;                      // turn power off
+      PIN_TO_PI = 1;                      // and restore initial state
     }
+    INTCONbits.GPIF = 0;                  // clear IOC interrupt flag
+    INTCON = 0;                           // clear interrupt flags
   }
   maxitime(1);  // wait 250ms (debounce)
 }
