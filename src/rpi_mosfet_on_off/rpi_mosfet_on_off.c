@@ -48,18 +48,13 @@ static void init(void) {
   WPU       = 0b010100;           // weak pullups enable on GP2, GP4
   IOC       = 0b010101;           // IOC on GP0, GP2, GP4
 
-  INTCON                  = 0;    // clear interrupt flag bits
   OPTION_REGbits.NOT_GPPU = 0;    // enable pullups
   GPIO                    = 0;    // initial value of GPIOs
   PIN_TO_PI               = 1;    //  except PIN_TO_PI
-  PIN_POWER               = 0;    //  and power
+  INTCON                  = 0;    // clear interrupt flag bits
   INTCONbits.GPIE         = 1;    // enable IOC
   INTCONbits.GIE          = 1;    // global interrupt enable
 }
-
-////////////////////////////////////////////////////////////////////////
-// globals
-
 
 ////////////////////////////////////////////////////////////////////////
 // Interrupt service routine
@@ -77,7 +72,6 @@ static void isr(void) __interrupt 0 {
       PIN_TO_PI = 1;                      // and restore initial state
     }
     INTCONbits.GPIF = 0;                  // clear IOC interrupt flag
-    INTCON = 0;                           // clear interrupt flags
   }
   maxitime(1);  // wait 250ms (debounce)
 }
