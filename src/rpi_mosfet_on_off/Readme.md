@@ -9,8 +9,9 @@ This is a simple "firmware" for the following setup:
     five seconds. This gives the Pi time to setup it's GPIOs correctly.
   - Again on a signal (high->low), the PIC requests the Pi to shutdown by
     setting an output pin to low. This pin is connected and monitored
-    by the Pi (using `dtoverlay=gpio-shutdown,gpio_pin=x,gpio_pull=up` in
-    `/boot/config.txt`).
+    by the Pi (using `dtoverlay=gpio-shutdown,gpio_pin=x,gpio_pull=off` in
+    `/boot/config.txt` - don't use the default pin 3, since it has a
+    pullup).
   - The Pi now shuts down and at the end sets a pin to high (using the
     overlay `dtoverlay=gpio-poweroff,gpiopin=y` in `/boot/config.txt`).
     Note that the Pi temporarely pulls up the pin during early boot.
