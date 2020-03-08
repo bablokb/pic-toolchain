@@ -28,6 +28,7 @@
 #define PIN_SIG2    GPIObits.GP2
 #define PIN_TO_PI   GPIObits.GP1
 #define PIN_FROM_PI GPIObits.GP0
+#define BOOT_WAIT   20               // 5s = 20*250ms
 
 ////////////////////////////////////////////////////////////////////////
 // MCLR on, Power on Timer, no WDT, int-Oscillator, 
@@ -65,7 +66,8 @@ static void isr(void) __interrupt 0 {
       if (PIN_POWER) {                    // power is on:
         PIN_TO_PI = 0;                    //   signal shutdown to Pi
       } else {                            // power is off:
-        PIN_POWER = 1;                    //   turn power on
+        PIN_POWER = 1;                    //   turn power on and
+        maxitime(BOOT_WAIT);              //   wait until Pi is up
       }
     } else if (PIN_FROM_PI) {             // High: shutdown complete
       PIN_POWER = 0;                      // turn power off
