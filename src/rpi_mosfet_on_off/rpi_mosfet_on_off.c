@@ -29,6 +29,8 @@
 #define PIN_TO_PI   GPIObits.GP1
 #define PIN_FROM_PI GPIObits.GP0
 #define BOOT_WAIT   20               // 5s = 20*250ms
+#define POWER_ON    0
+#define POWER_OFF   1
 
 ////////////////////////////////////////////////////////////////////////
 // MCLR on, Power on Timer, no WDT, int-Oscillator, 
@@ -51,6 +53,7 @@ static void init(void) {
 
   OPTION_REGbits.NOT_GPPU = 0;    // enable pullups
   GPIO                    = 0;    // initial value of GPIOs
+  PIN_POWER       = POWER_OFF;    //  except PIN_POWER
   PIN_TO_PI               = 1;    //  except PIN_TO_PI
   INTCON                  = 0;    // clear interrupt flag bits
   INTCONbits.GPIE         = 1;    // enable IOC
@@ -63,14 +66,14 @@ static void init(void) {
 static void isr(void) __interrupt 0 {
   if (INTCONbits.GPIF) {                  // interrupt-on-change
     if (!PIN_SIG1||!PIN_SIG2) {           // SIG1 or SIG2 is low
-      if (PIN_POWER) {                    // power is on:
-        PIN_TO_PI = 0;                    //   signal shutdown to Pi
-      } else {                            // power is off:
-        PIN_POWER = 1;                    //   turn power on and
+      if (PIN_POWER == POWER_OFF) {       // power is off:
+        PIN_POWER = POWER_ON;             //   turn power on and
         maxitime(BOOT_WAIT);              //   wait until Pi is up
+      } else {                            // power is on:
+        PIN_TO_PI = 0;                    //   signal shutdown to Pi
       }
     } else if (PIN_FROM_PI) {             // High: shutdown complete
-      PIN_POWER = 0;                      // turn power off
+      PIN_POWER = POWER_OFF;              // turn power off
       PIN_TO_PI = 1;                      // and restore initial state
     }
     INTCONbits.GPIF = 0;                  // clear IOC interrupt flag
