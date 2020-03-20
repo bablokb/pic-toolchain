@@ -1,0 +1,31 @@
+// --------------------------------------------------------------------------
+// Sample project hd44780_lcd
+//
+// Author: Bernhard Bablok
+// https://github.com/bablokb/pic-toolchain/src/hd44780_lcd
+//
+// --------------------------------------------------------------------------
+
+#include <pic12f675.h>
+
+#ifndef __LCD_H
+#define __LCD_H
+
+// Define Pins
+#define LCD_ENABLE  GP0   // Enable pin for LCD
+#define LCD_CLK     GP1   // Serial clock pin
+#define LCD_DATA    GP2   // Serial data pin
+
+// Define Pins direction registrers
+#define LCD_ENABLE_TRISIO TRISIO0
+#define LCD_CLK_TRISIO    TRISIO1
+#define LCD_DATA_TRISIO   TRISIO2
+
+// Function Declarations
+void lcd_write_cmd(uint8_t cmd);
+void lcd_write_data(uint8_t data);
+void lcd_init(void);
+void lcd_pos(uint8_t row, uint8_t col);
+void lcd_clear(void);
+void lcd_print(const unsigned char* string);
+#endif
