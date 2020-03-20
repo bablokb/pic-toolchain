@@ -24,7 +24,7 @@ OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM)) \
 # --- pattern  -------------------------------------------------------------
 
 .c.o:
-	sdcc --use-non-free -m$(ARCH) -p$(MODEL) -c $<
+	sdcc --use-non-free -m$(ARCH) -p$(MODEL) -Wa -w1 -c $<
 
 $(patsubst %.asm,%.o,$(EXTRA_ASM)): %.o: %.asm
 	gpasm -a inhx8m -p$(MODEL) -c $<
