@@ -81,6 +81,8 @@ void lcd_init(void) {
 
   delay_ms(50);           // initial delay (wait for power-up)
   lcd_write_cmd(0x20);    // 4-bit mode  (maybe repeat 3 times)
+  lcd_write_cmd(0x20);    // 4-bit mode  (maybe repeat 3 times)
+  lcd_write_cmd(0x20);    // 4-bit mode  (maybe repeat 3 times)
   lcd_write_cmd(0x28);    //function set
   lcd_write_cmd(0x0c);    //display on,cursor off,blink off
   lcd_write_cmd(0x01);    //clear display
@@ -95,7 +97,7 @@ void lcd_clear(void) {
 }
 
 // --------------------------------------------------------------------------
-// set position
+// set position (row,col) with row=1..2, col=1..16
 // address is: 
 //   first  line: 0x80 + 0x00 + column-1 
 //   second line: 0x80 + 0x40 + column-1
