@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 1 1
 Title "PIC12F675 with HD44780 LCD"
 Date "2020-03-21"
-Rev "2"
+Rev "3"
 Comp "Bernhard Bablok"
 Comment1 "https://github.com/bablokb/pic-toolchain/src/hd44780_lcd"
 Comment2 ""
@@ -70,12 +70,12 @@ Connection ~ 2800 4050
 $Comp
 L power:GND #PWR05
 U 1 1 5E75FCDB
-P 5700 4950
-F 0 "#PWR05" H 5700 4700 50  0001 C CNN
-F 1 "GND" H 5705 4777 50  0000 C CNN
-F 2 "" H 5700 4950 50  0001 C CNN
-F 3 "" H 5700 4950 50  0001 C CNN
-	1    5700 4950
+P 5700 5100
+F 0 "#PWR05" H 5700 4850 50  0001 C CNN
+F 1 "GND" H 5705 4927 50  0000 C CNN
+F 2 "" H 5700 5100 50  0001 C CNN
+F 3 "" H 5700 5100 50  0001 C CNN
+	1    5700 5100
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -171,20 +171,9 @@ F 3 "http://www.wincomlcd.com/pdf/WC1602A-SFYLYHTC06.pdf" H 5600 4500 50  0001 C
 $EndComp
 Wire Wire Line
 	2800 4050 2800 4500
-Wire Wire Line
-	5700 4950 5700 4500
-Wire Wire Line
-	4100 4500 3750 4500
 Connection ~ 2800 4500
 Wire Wire Line
 	2800 4500 2800 4750
-Wire Wire Line
-	4300 4900 3750 4900
-Wire Wire Line
-	3750 4900 3750 4500
-Connection ~ 3750 4500
-Wire Wire Line
-	3750 4500 2800 4500
 Wire Wire Line
 	3400 3050 3400 3950
 Wire Wire Line
@@ -231,4 +220,15 @@ Wire Wire Line
 Connection ~ 4400 3850
 Wire Wire Line
 	4400 3850 3900 3850
+Wire Wire Line
+	2800 4500 4100 4500
+Wire Wire Line
+	5700 4500 5700 5050
+Wire Wire Line
+	4300 5050 5700 5050
+Wire Wire Line
+	4300 4900 4300 5050
+Connection ~ 5700 5050
+Wire Wire Line
+	5700 5050 5700 5100
 $EndSCHEMATC
