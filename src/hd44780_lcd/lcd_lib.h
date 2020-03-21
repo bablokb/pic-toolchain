@@ -12,14 +12,14 @@
 #define __LCD_H
 
 // Define Pins
-#define LCD_ENABLE  GP0   // Enable pin for LCD
-#define LCD_CLK     GP1   // Serial clock pin
-#define LCD_DATA    GP2   // Serial data pin
+#define PIN_ENABLE  GP0   // Enable pin for LCD
+#define PIN_CLK     GP1   // Serial clock pin
+#define PIN_DATA    GP2   // Serial data pin
 
 // Define Pins direction registrers
-#define LCD_ENABLE_TRISIO TRISIO0
-#define LCD_CLK_TRISIO    TRISIO1
-#define LCD_DATA_TRISIO   TRISIO2
+#define PIN_ENABLE_TRISIO TRISIO0
+#define PIN_CLK_TRISIO    TRISIO1
+#define PIN_DATA_TRISIO   TRISIO2
 
 // Function Declarations
 void lcd_write_cmd(uint8_t cmd);

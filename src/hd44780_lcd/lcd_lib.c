@@ -25,9 +25,9 @@
 // --------------------------------------------------------------------------
 
 void lcd_enable(void) {
-  LCD_ENABLE = 1;         // set enable-pin of lcd on
+  PIN_ENABLE = 1;         // set enable-pin of lcd on
   delay_150();            // ...
-  LCD_ENABLE = 0;         // and off again
+  PIN_ENABLE = 0;         // and off again
   delay_150();         	
 }
 
@@ -39,10 +39,10 @@ static void lcd_write_byte(uint8_t byte) {
   uint8_t i = 0;
   
   for (i=0;i<8;i++)	{
-    LCD_DATA = (((byte>>i)&0x1)!=0);   // write bit value
-    LCD_CLK  = 1;                      // toggle clock pin
+    PIN_DATA = (((byte>>i)&0x1)!=0);   // write bit value
+    PIN_CLK  = 1;                      // toggle clock pin
     delay_10();
-    LCD_CLK  = 0;
+    PIN_CLK  = 0;
     delay_10();
   }
 }
@@ -72,12 +72,12 @@ void lcd_write_data(uint8_t data) {
 
 void lcd_init(void) { 
   // Firstly make all pins output
-  LCD_ENABLE        = 0;
-  LCD_DATA          = 0;
-  LCD_CLK           = 0;
-  LCD_ENABLE_TRISIO = 0;
-  LCD_DATA_TRISIO   = 0;
-  LCD_CLK_TRISIO    = 0;
+  PIN_ENABLE        = 0;
+  PIN_DATA          = 0;
+  PIN_CLK           = 0;
+  PIN_ENABLE_TRISIO = 0;
+  PIN_DATA_TRISIO   = 0;
+  PIN_CLK_TRISIO    = 0;
 
   delay_ms(50);           // initial delay (wait for power-up)
   lcd_write_cmd(0x20);    // 4-bit mode  (maybe repeat 3 times)
