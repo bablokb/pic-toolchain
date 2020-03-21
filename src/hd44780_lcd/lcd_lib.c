@@ -23,21 +23,13 @@
 #include "lcd_lib.h"
 
 // --------------------------------------------------------------------------
-
-void lcd_enable(void) {
-  PIN_ENABLE = 0;         // high->low triggers read
-  delay_150();            // ...
-  PIN_ENABLE = 1;         // set back to high
-  delay_150();         	
-}
-
-// --------------------------------------------------------------------------
 // we only need 5 bits, but always write 8 bits to keep the shift register
 // in sync
 
 static void lcd_write_byte(uint8_t byte) {
   uint8_t i = 0;
-  
+
+  // write data to shift-register
   for (i=0;i<8;i++) {
     PIN_DATA = ((byte>>i)&0x1);   // write bit value
     PIN_CLK  = 1;                 // toggle clock pin
@@ -45,6 +37,12 @@ static void lcd_write_byte(uint8_t byte) {
     PIN_CLK  = 0;
     delay_10();
   }
+
+  // enable LCD-read
+  PIN_ENABLE = 0;         // high->low triggers read
+  delay_150();            // ...
+  PIN_ENABLE = 1;         // set back to high
+  delay_150();
 }
 
 // --------------------------------------------------------------------------
@@ -52,9 +50,7 @@ static void lcd_write_byte(uint8_t byte) {
 
 void lcd_write_cmd(uint8_t cmd) {
   lcd_write_byte((cmd&0xF0)>>4);  // write upper bits
-  lcd_enable();
   lcd_write_byte(cmd&0x0F);       // write lower bits
-  lcd_enable();
   delay_ms(40);
 }
 
@@ -63,9 +59,8 @@ void lcd_write_cmd(uint8_t cmd) {
 
 void lcd_write_data(uint8_t data) {
   lcd_write_byte(((data&0xF0)>>4)|0x10);   // write upper bits
-  lcd_enable();
   lcd_write_byte((data&0x0F)|0x10);        // write lower bits
-  lcd_enable();
+  delay_ms(40);
 }
 
 // --------------------------------------------------------------------------
