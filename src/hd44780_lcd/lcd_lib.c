@@ -25,9 +25,9 @@
 // --------------------------------------------------------------------------
 
 void lcd_enable(void) {
-  PIN_ENABLE = 1;         // set enable-pin of lcd on
+  PIN_ENABLE = 0;         // high->low triggers read
   delay_150();            // ...
-  PIN_ENABLE = 0;         // and off again
+  PIN_ENABLE = 1;         // set back to high
   delay_150();         	
 }
 
@@ -75,18 +75,19 @@ void lcd_init(void) {
   PIN_ENABLE_TRISIO = 0;
   PIN_DATA_TRISIO   = 0;
   PIN_CLK_TRISIO    = 0;
-  PIN_ENABLE        = 0;
+  PIN_ENABLE        = 1;
   PIN_DATA          = 0;
   PIN_CLK           = 0;
 
   delay_ms(50);           // initial delay (wait for power-up)
-  lcd_write_cmd(0x20);    // 4-bit mode  (maybe repeat 3 times)
-  lcd_write_cmd(0x20);    // 4-bit mode  (maybe repeat 3 times)
-  lcd_write_cmd(0x20);    // 4-bit mode  (maybe repeat 3 times)
+  lcd_write_cmd(0x30);    // init-sequence (3x)
+  lcd_write_cmd(0x30);
+  lcd_write_cmd(0x30);
+  lcd_write_cmd(0x20);    // 4-bit mode
   lcd_write_cmd(0x28);    //function set
-  lcd_write_cmd(0x0c);    //display on,cursor off,blink off
-  lcd_write_cmd(0x01);    //clear display
+  lcd_write_cmd(0x0C);    //display on,cursor off,blink off
   lcd_write_cmd(0x06);    //entry mode, set increment
+  lcd_write_cmd(0x01);    //clear display
 }
 
 // --------------------------------------------------------------------------
