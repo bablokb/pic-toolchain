@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 1 1
 Title "PIC12F675 with HD44780 LCD"
 Date "2020-03-21"
-Rev "3"
+Rev "4"
 Comp "Bernhard Bablok"
 Comment1 "https://github.com/bablokb/pic-toolchain/src/hd44780_lcd"
 Comment2 ""
@@ -213,22 +213,43 @@ NoConn ~ 5100 4100
 NoConn ~ 5000 4100
 NoConn ~ 4900 4100
 NoConn ~ 4800 4100
-NoConn ~ 4700 4900
-NoConn ~ 4600 4900
 Wire Wire Line
 	4400 4100 4400 3850
 Connection ~ 4400 3850
 Wire Wire Line
 	4400 3850 3900 3850
 Wire Wire Line
-	2800 4500 4100 4500
+	2800 4500 3500 4500
 Wire Wire Line
 	5700 4500 5700 5050
 Wire Wire Line
-	4300 5050 5700 5050
+	4300 5050 4700 5050
 Wire Wire Line
 	4300 4900 4300 5050
 Connection ~ 5700 5050
 Wire Wire Line
 	5700 5050 5700 5100
+$Comp
+L Device:R R1
+U 1 1 5E762B37
+P 3650 4900
+F 0 "R1" V 3443 4900 50  0000 C CNN
+F 1 "220" V 3550 4900 50  0000 C CNN
+F 2 "" V 3580 4900 50  0001 C CNN
+F 3 "~" H 3650 4900 50  0001 C CNN
+	1    3650 4900
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3500 4900 3500 4500
+Connection ~ 3500 4500
+Wire Wire Line
+	3500 4500 4100 4500
+Wire Wire Line
+	3800 4900 4600 4900
+Wire Wire Line
+	4700 4900 4700 5050
+Connection ~ 4700 5050
+Wire Wire Line
+	4700 5050 5700 5050
 $EndSCHEMATC
