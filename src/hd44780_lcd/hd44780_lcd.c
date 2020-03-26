@@ -51,8 +51,9 @@ void main(void) {
 
   init();
   lcd_init();
+  lcd_pos(1,4);
   lcd_print("Hello");
-  lcd_pos(1,2);
+  lcd_pos(2,4);
   lcd_print("world!");
   while (1) {
     __asm__("SLEEP");
