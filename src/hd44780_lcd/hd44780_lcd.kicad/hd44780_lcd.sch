@@ -5,8 +5,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "PIC12F675 with HD44780 LCD"
-Date "2020-03-21"
-Rev "4"
+Date "2020-03-26"
+Rev "5"
 Comp "Bernhard Bablok"
 Comment1 "https://github.com/bablokb/pic-toolchain/src/hd44780_lcd"
 Comment2 ""
@@ -100,17 +100,6 @@ F 3 "~" H 2400 1900 50  0001 C CNN
 	1    2400 1900
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:PWR_FLAG #FLG01
-U 1 1 5E7638B3
-P 2350 4050
-F 0 "#FLG01" H 2350 4125 50  0001 C CNN
-F 1 "PWR_FLAG" H 2350 4223 50  0000 C CNN
-F 2 "" H 2350 4050 50  0001 C CNN
-F 3 "~" H 2350 4050 50  0001 C CNN
-	1    2350 4050
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	2400 1900 2400 2350
 Wire Wire Line
@@ -118,8 +107,6 @@ Wire Wire Line
 Connection ~ 2400 2350
 Wire Wire Line
 	2400 2350 2800 2350
-Wire Wire Line
-	2350 4050 2800 4050
 NoConn ~ 4850 2750
 NoConn ~ 4850 2850
 $Comp
@@ -219,37 +206,68 @@ Connection ~ 4400 3850
 Wire Wire Line
 	4400 3850 3900 3850
 Wire Wire Line
-	2800 4500 3500 4500
-Wire Wire Line
 	5700 4500 5700 5050
-Wire Wire Line
-	4300 5050 4700 5050
-Wire Wire Line
-	4300 4900 4300 5050
 Connection ~ 5700 5050
 Wire Wire Line
 	5700 5050 5700 5100
 $Comp
 L Device:R R1
 U 1 1 5E762B37
-P 3650 4900
-F 0 "R1" V 3443 4900 50  0000 C CNN
-F 1 "220" V 3550 4900 50  0000 C CNN
-F 2 "" V 3580 4900 50  0001 C CNN
-F 3 "~" H 3650 4900 50  0001 C CNN
-	1    3650 4900
+P 3700 5250
+F 0 "R1" V 3493 5250 50  0000 C CNN
+F 1 "220" V 3600 5250 50  0000 C CNN
+F 2 "" V 3630 5250 50  0001 C CNN
+F 3 "~" H 3700 5250 50  0001 C CNN
+	1    3700 5250
 	0    1    1    0   
 $EndComp
-Wire Wire Line
-	3500 4900 3500 4500
-Connection ~ 3500 4500
-Wire Wire Line
-	3500 4500 4100 4500
-Wire Wire Line
-	3800 4900 4600 4900
 Wire Wire Line
 	4700 4900 4700 5050
 Connection ~ 4700 5050
 Wire Wire Line
 	4700 5050 5700 5050
+Wire Wire Line
+	4600 4900 4600 5250
+Wire Wire Line
+	3550 5250 3550 4500
+Connection ~ 3550 4500
+Wire Wire Line
+	3550 4500 3950 4500
+Wire Wire Line
+	4600 5250 3850 5250
+Wire Wire Line
+	2350 4050 2800 4050
+Wire Wire Line
+	2800 4500 3550 4500
+$Comp
+L power:PWR_FLAG #FLG01
+U 1 1 5E7638B3
+P 2350 4050
+F 0 "#FLG01" H 2350 4125 50  0001 C CNN
+F 1 "PWR_FLAG" H 2350 4223 50  0000 C CNN
+F 2 "" H 2350 4050 50  0001 C CNN
+F 3 "~" H 2350 4050 50  0001 C CNN
+	1    2350 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_POT RV1
+U 1 1 5E7E7257
+P 3950 4900
+F 0 "RV1" H 3881 4854 50  0000 R CNN
+F 1 "10K" H 3881 4945 50  0000 R CNN
+F 2 "" H 3950 4900 50  0001 C CNN
+F 3 "~" H 3950 4900 50  0001 C CNN
+	1    3950 4900
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	3950 5050 4700 5050
+Wire Wire Line
+	4300 4900 4100 4900
+Wire Wire Line
+	3950 4750 3950 4500
+Connection ~ 3950 4500
+Wire Wire Line
+	3950 4500 4100 4500
 $EndSCHEMATC
