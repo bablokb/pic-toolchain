@@ -75,11 +75,11 @@ void lcd_init(void) {
   PIN_CLK           = 0;
 
   delay_ms(50);           // initial delay (wait for power-up)
-  lcd_write_byte(0x03);    // init-sequence (3x)
+  lcd_write_byte(0x03);   // init-sequence (3x)
   delay_ms(5);
   lcd_write_byte(0x03);
   lcd_write_byte(0x03);
-  lcd_write_byte(0x20);   // 4-bit mode
+  lcd_write_byte(0x02);   // 4-bit mode
   lcd_write_cmd(0x28);    //function set
   lcd_write_cmd(0x0C);    //display on,cursor off,blink off
   lcd_write_cmd(0x06);    //entry mode, set increment
