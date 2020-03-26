@@ -73,10 +73,10 @@ _delay_ms
         ;; - return                        2
         ;; overhead is 4 + 3w µs, i.e. about 0,7% -> 0,3% overhead
         
-        movwf count
+        movwf count2
 
 d_ms    call _delay_1000
-        decfsz count, 1
+        decfsz count2, 1
         goto d_ms
 
         return
