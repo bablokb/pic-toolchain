@@ -26,7 +26,7 @@
 // we only need 5 bits, but always write 8 bits to keep the shift register
 // in sync
 
-static void lcd_write_byte(uint8_t byte) {
+static void lcd_shift_out(uint8_t byte) {
   uint8_t i = 0;
 
   // write data to shift-register
@@ -49,8 +49,8 @@ static void lcd_write_byte(uint8_t byte) {
 // Command has the RS-bit cleared
 
 void lcd_write_cmd(uint8_t cmd) {
-  lcd_write_byte((cmd&0xF0)>>4);  // write upper bits
-  lcd_write_byte(cmd&0x0F);       // write lower bits
+  lcd_shift_out((cmd&0xF0)>>4);  // write upper bits
+  lcd_shift_out(cmd&0x0F);       // write lower bits
   delay_ms(40);
 }
 
@@ -58,8 +58,8 @@ void lcd_write_cmd(uint8_t cmd) {
 // Data has the RS-bit set
 
 void lcd_write_data(uint8_t data) {
-  lcd_write_byte(((data&0xF0)>>4)|0x10);   // write upper bits
-  lcd_write_byte((data&0x0F)|0x10);        // write lower bits
+  lcd_shift_out(((data&0xF0)>>4)|0x10);   // write upper bits
+  lcd_shift_out((data&0x0F)|0x10);        // write lower bits
   delay_ms(40);
 }
 
@@ -75,11 +75,11 @@ void lcd_init(void) {
   PIN_CLK           = 0;
 
   delay_ms(50);           // initial delay (wait for power-up)
-  lcd_write_byte(0x03);   // init-sequence (3x)
+  lcd_shift_out(0x03);    // init-sequence (3x)
   delay_ms(5);
-  lcd_write_byte(0x03);
-  lcd_write_byte(0x03);
-  lcd_write_byte(0x02);   // 4-bit mode
+  lcd_shift_out(0x03);
+  lcd_shift_out(0x03);
+  lcd_shift_out(0x02);    // 4-bit mode
   lcd_write_cmd(0x28);    //function set
   lcd_write_cmd(0x0C);    //display on,cursor off,blink off
   lcd_write_cmd(0x06);    //entry mode, set increment
