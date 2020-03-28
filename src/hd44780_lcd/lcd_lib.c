@@ -7,10 +7,10 @@
 //
 //  Storage register clock SRCLK is connected to shift register clock,
 //  so the storage register is one bit behind of the shift register.
-//  When writing 8 bits to the shift register, we fill only Q0-Q7 of
-//  the storage register:
-//    Q6-Q3 will hold b0-b3 (command/data)        -> connect to D4-D7
-//    Q2    will hold b4    (data or cmd, 1 or 0) -> connect to RS
+//  When writing 8 bits to the shift register, we fill only fill Q0-Q7/QA-QD
+//  of the storage register:
+//    Q6-Q3/QE-QD will hold b0-b3 (command/data)        -> connect to D4-D7
+//    Q2/QB       will hold b4    (data or cmd, 1 or 0) -> connect to RS
 //  The rest is not connected.
 //
 // Author: Bernhard Bablok
