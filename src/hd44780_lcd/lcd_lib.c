@@ -87,13 +87,6 @@ void lcd_init(void) {
 }
 
 // --------------------------------------------------------------------------
-// Clear the Screen and return cursor to zero position
-
-void lcd_clear(void) {  
-  lcd_write_cmd(0x01);
-}
-
-// --------------------------------------------------------------------------
 // set position (row,col) with row=1..2, col=1..16
 // address is: 
 //   first  line: 0x80 + 0x00 + column-1 

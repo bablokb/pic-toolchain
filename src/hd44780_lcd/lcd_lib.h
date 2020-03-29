@@ -26,6 +26,8 @@ void lcd_write_cmd(uint8_t cmd);
 void lcd_write_data(uint8_t data);
 void lcd_init(void);
 void lcd_pos(uint8_t row, uint8_t col);
-void lcd_clear(void);
 void lcd_print(const unsigned char* string);
+
+#define lcd_clear() lcd_write_cmd(0x01)
+
 #endif
