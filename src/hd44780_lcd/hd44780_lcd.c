@@ -41,6 +41,9 @@ static void init(void) {
 // --- main program   --------------------------------------------------------
 
 void main(void) {
+#ifdef LCD_PRINT_X
+  uint8_t counter=0;
+#endif
   // Load calibration
   __asm
     bsf  STATUS, RP0
@@ -55,7 +58,15 @@ void main(void) {
   lcd_print("Hello");
   lcd_pos(2,4);
   lcd_print("world!");
+#ifdef LCD_PRINT_X
+  while (1) {
+    lcd_pos(2,15);
+    lcd_print_x(counter++);
+    delay_ms(250);
+  }
+#else
   while (1) {
     __asm__("SLEEP");
   }
+#endif
 }

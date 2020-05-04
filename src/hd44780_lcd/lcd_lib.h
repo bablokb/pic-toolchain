@@ -27,7 +27,12 @@ void lcd_write_data(uint8_t data);
 void lcd_init(void);
 void lcd_pos(uint8_t row, uint8_t col);
 void lcd_print(const unsigned char* string);
-
+#ifdef LCD_PRINT_I
+void lcd_print_i(uint8_t value);
+#endif
+#ifdef LCD_PRINT_X
+void lcd_print_x(uint8_t value);
+#endif
 #define lcd_clear() lcd_write_cmd(0x01)
 
 #endif

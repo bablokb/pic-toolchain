@@ -111,3 +111,51 @@ void lcd_print(const unsigned char* string) {
     lcd_write_data(*p);
   }
 }
+
+#ifdef LCD_PRINT_I
+// --------------------------------------------------------------------------
+// print at most 3 digits of uint8_t
+
+void lcd_print_i(uint8_t value) {
+  uint8_t n = 0;
+  if (value > 99) {
+    n = value/100;
+    lcd_write_data('0'+n);
+    value -= n*100;
+  }
+  if (value > 9 || n) {     // if n>0 we also have to print a zero
+    n = value/10;
+    lcd_write_data('0'+n);
+    value -= n*10;
+  }
+  lcd_write_data('0'+value);
+}
+#endif
+
+#ifdef LCD_PRINT_X
+// --------------------------------------------------------------------------
+// print uint8_t in hex-format
+
+void lcd_print_x(uint8_t value) {
+  uint8_t nibble;
+  char c;
+
+  // upper nibble
+  nibble = value >> 4;
+  if (nibble > 9) {
+    c = 0x40+nibble-9;
+  } else {
+    c = 0x30+nibble;
+  }
+  lcd_write_data(c);
+
+  // lower nibble
+  nibble = value & 0x0F;
+  if (nibble > 9) {
+    c = 0x40+nibble-9;
+  } else {
+    c = 0x30+nibble;
+  }
+  lcd_write_data(c);
+}
+#endif
