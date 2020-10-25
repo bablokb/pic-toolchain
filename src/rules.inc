@@ -16,10 +16,6 @@ default:
 # --- configuration   ------------------------------------------------------
 
 HEXF=inhx8m
-SDCC_ROOT=/usr/local/share/sdcc
-LIBDIR=$(SDCC_ROOT)/lib/$(ARCH)
-LIBDIR_NONFREE=$(SDCC_ROOT)/non-free/lib/$(ARCH)
-LIBS=libsdcc.lib pic$(MODEL).lib
 OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM)) \
                   $(patsubst %.c,%.o,$(EXTRA_C))
 
@@ -32,8 +28,8 @@ $(patsubst %.asm,%.o,$(EXTRA_ASM)): %.o: %.asm
 	gpasm -a $(HEXF) -p$(MODEL) -c $<
 
 $(PROJECT).hex: $(OBJS)
-	gplink -S2 -w -r -m -a $(HEXF) -I$(LIBDIR) -I$(LIBDIR_NONFREE) \
-                  -o $(PROJECT).hex $(OBJS) $(LIBS)
+        sdcc --use-non-free -m$(ARCH) -p$(MODEL) \
+             -Wl "-S2 -w -r -m" --out-fmt-ihx -o $(PROJECT).hex $(OBJS)
 
 # --- targets   ------------------------------------------------------------
 
