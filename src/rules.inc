@@ -8,12 +8,14 @@
 # --------------------------------------------------------------------------
 
 default:
-	@echo "make build: create $(PROJECT).hex"
-	@echo "make flash: build and flash $(PROJECT).hex to PIC"
-	@echo "make clean: remove intermediate files"
+	@echo "make build:  create $(PROJECT).hex"
+	@echo "make flash:  build and flash $(PROJECT).hex to PIC using PICKitPlus"
+	@echo "make flash2: build and flash $(PROJECT).hex to PIC using pk2cmd"
+	@echo "make clean:  remove intermediate files"
 
 # --- configuration   ------------------------------------------------------
 
+HEXF=inhx8m
 SDCC_ROOT=/usr/local/share/sdcc
 LIBDIR=$(SDCC_ROOT)/lib/$(ARCH)
 LIBDIR_NONFREE=$(SDCC_ROOT)/non-free/lib/$(ARCH)
@@ -27,19 +29,22 @@ OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM)) \
 	sdcc --use-non-free -m$(ARCH) -p$(MODEL) -Wa -w1 -c $(SDCC_ARGS) $<
 
 $(patsubst %.asm,%.o,$(EXTRA_ASM)): %.o: %.asm
-	gpasm -a inhx8m -p$(MODEL) -c $<
+	gpasm -a $(HEXF) -p$(MODEL) -c $<
 
 $(PROJECT).hex: $(OBJS)
-	gplink -S2 -w -r -m -a inhx8m -I$(LIBDIR) -I$(LIBDIR_NONFREE) \
+	gplink -S2 -w -r -m -a $(HEXF) -I$(LIBDIR) -I$(LIBDIR_NONFREE) \
                   -o $(PROJECT).hex $(OBJS) $(LIBS)
 
 # --- targets   ------------------------------------------------------------
 
-.PH0NY: flash clean
+.PH0NY: flash flash2 clean
 
 build: $(PROJECT).hex
 
 flash: $(PROJECT).hex
+	pkcmd-lx -w -ppic$(MODEL) -f $(PROJECT).hex -mp
+
+flash2: $(PROJECT).hex
 	pk2cmd -Ppic$(MODEL) -X -M -F $(PROJECT).hex
 
 clean:
