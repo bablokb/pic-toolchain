@@ -10,6 +10,11 @@
 
 #include "alias.h"
 
+#ifndef PIN_LED
+  #define PIN_LED 5
+#endif
+#define GP_LED _CONCAT(GP,PIN_LED)
+
 CONFIG_WORDS
 
 // --- uncalibrated delay   --------------------------------------------------
@@ -42,9 +47,9 @@ void main(void) {
 
   TRISIO = 0;
   while (1) {
-    GP5 = 1; // LED an
+    GP_LED = 1;       // LED on
     delay(30000);     // ~500ms @ 4MHz
-    GP5 = 0; // LED aus
+    GP_LED = 0;       // LED off
     delay(30000);     // ~500ms @ 4MHz
   }
 }
