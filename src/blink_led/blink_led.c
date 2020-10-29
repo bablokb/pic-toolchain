@@ -5,17 +5,12 @@
 //
 // --------------------------------------------------------------------------
 
-#define NO_BIT_DEFINES
-#include <pic12f675.h>
+#include <pic14regs.h>
 #include <stdint.h> 
 
-// compile with:
-// sdcc --use-non-free -mpic14 -p12f675 blink_led.c
+#include "alias.h"
 
-// MCLR on, Power on Timer, no WDT, int-oscillator, no brown out
-
-__code uint16_t __at (_CONFIG) __configword = 
-  _MCLRE_ON & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
+CONFIG_WORDS
 
 // --- uncalibrated delay   --------------------------------------------------
 
@@ -29,6 +24,9 @@ void delay(uint16_t iterations) {
 // --- main program   --------------------------------------------------------
 
 void main(void) {
+
+
+#ifdef __SDCC_PIC12F675
   // Load calibration
   __asm
     bsf  STATUS, RP0
@@ -36,12 +34,17 @@ void main(void) {
     movwf OSCCAL  ; Wert setzen
     bcf  STATUS, RP0
   __endasm;
+#endif
+
+#ifdef __SDCC_PIC12F1840
+  OSCCONbits.IRCF = 0b1101;                 // run at 4MHz
+#endif
 
   TRISIO = 0;
   while (1) {
-    GPIObits.GP5 = 1; // LED an
+    GP5 = 1; // LED an
     delay(30000);     // ~500ms @ 4MHz
-    GPIObits.GP5 = 0; // LED aus
+    GP5 = 0; // LED aus
     delay(30000);     // ~500ms @ 4MHz
   }
 }
