@@ -22,7 +22,8 @@ OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM)) \
 # --- pattern  -------------------------------------------------------------
 
 .c.o:
-	sdcc --use-non-free -m$(ARCH) -p$(MODEL) -Wa -w1 -c $(SDCC_ARGS) $<
+	sdcc --use-non-free -m$(ARCH) -p$(MODEL) \
+	     -I../include -Wa -w1 -c $(SDCC_ARGS) $<
 
 $(patsubst %.asm,%.o,$(EXTRA_ASM)): %.o: %.asm
 	gpasm -a $(HEXF) -p$(MODEL) -c $<
@@ -57,13 +58,10 @@ mcheck:
 	fi
 
 alias.h:
-	@echo "creating alias.h and alias_$(MODEL).h"
+	@echo "creating alias.h"
 	@echo '#include "alias_$(MODEL).h"' > alias.h
 
-alias_$(MODEL).h:
-	@cp -a "../alias_$(MODEL).h" .
-
-build: mcheck alias.h alias_$(MODEL).h $(PROJECT).hex
+build: mcheck alias.h $(PROJECT).hex
 
 flash: $(PROJECT).hex
 	pkcmd-lx -w -ppic$(MODEL) -f $(PROJECT).hex -mpc
@@ -72,7 +70,7 @@ flash2: $(PROJECT).hex
 	pk2cmd -Ppic$(MODEL) -X -M -F $(PROJECT).hex
 
 clean:
-	@rm -f model.mk alias*.h *.o *.cod *.lst *.map *.hex $(PROJECT).asm \
+	@rm -f model.mk alias.h *.o *.cod *.lst *.map *.hex $(PROJECT).asm \
                          $(patsubst %.c,%.asm,$(EXTRA_C)) $(EXTRA_CLEAN)
 
 
