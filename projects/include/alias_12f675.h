@@ -17,5 +17,5 @@
 
   #define CONFIG_WORDS \
     __code uint16_t __at (_CONFIG) __configword = \
-      _MCLRE_OFF & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
+      MCLR & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
 #endif

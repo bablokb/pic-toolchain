@@ -16,6 +16,7 @@ default:
 # --- configuration   ------------------------------------------------------
 
 HEXF=inhx8m
+MCLR=_MCLRE_OFF
 OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM)) \
                   $(patsubst %.c,%.o,$(EXTRA_C))
 
@@ -23,7 +24,7 @@ OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM)) \
 
 .c.o:
 	sdcc --use-non-free -m$(ARCH) -p$(MODEL) \
-	     -I../include -Wa -w1 -c $(SDCC_ARGS) $<
+	     -I../include -Wa -w1 -DMCLR=$(MCLR) $(SDCC_ARGS) $<
 
 $(patsubst %.asm,%.o,$(EXTRA_ASM)): %.o: %.asm
 	gpasm -a $(HEXF) -p$(MODEL) -c $<

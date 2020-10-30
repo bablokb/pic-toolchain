@@ -32,7 +32,7 @@
   
   #define CONFIG_WORDS \
   __code uint16_t __at (_CONFIG1) __configword1 = \
-    _MCLRE_OFF & _PWRTE_ON & _WDTE_OFF & _CLKOUTEN_OFF & _BOREN_OFF & _FOSC_INTOSC; \
+    MCLR & _PWRTE_ON & _WDTE_OFF & _CLKOUTEN_OFF & _BOREN_OFF & _FOSC_INTOSC; \
   __code uint16_t __at (_CONFIG2) __configword2 = _LVP_OFF & _DEBUG_OFF;
 
 #endif
