@@ -23,9 +23,9 @@ program `pk2cmd`. You can find a precompiled version for armv6l in
 Example Programs
 ================
 
-The directory `src` contains a number of sample projects for the PIC12F675.
-Be sure to copy also the file `src/rules.inc`, which contains generic
-make-rules used by all projects.
+The directory `projects` contains a number of sample projects.
+Be sure to copy also the file `projects/rules.inc` (generic makefile-rules)
+and the directory `projects/include` used by all projects.
 
 The projects demonstrate various aspects, e.g. how to embbed assembler code
 into C-code, or link with preexisting assembler-code.
