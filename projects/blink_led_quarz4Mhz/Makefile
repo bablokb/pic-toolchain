@@ -12,8 +12,10 @@
 
 PROJECT=blink_led_quarz4MHz
 EXTRA_ASM=quarz4MHz.asm
-MODEL=12f675
 ARCH=pic14
+
+PIN_LED=5
+SDCC_ARGS=-DPIN_LED=$(PIN_LED)
 
 include ../rules.inc
 

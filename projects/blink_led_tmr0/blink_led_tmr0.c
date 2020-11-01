@@ -1,20 +1,25 @@
-////////////////////////////////////////////////////////////////////////
-// Toggle LED on GP5 every 0.5s using the internal 8Bit timer
-// compile with:
-// sdcc --use-non-free -mpic14 -p12f675 blink_led_tmr0.c
-////////////////////////////////////////////////////////////////////////
+// --------------------------------------------------------------------------
+// Sample project blink_led_tmr0
+//
+// Toggle LED on GPx every 0.5s using the internal 8Bit timer
+//
+// Author: Bernhard Bablok
+//
+// https://github.com/bablokb/pic-toolchain
+//
+// --------------------------------------------------------------------------
 
-#define NO_BIT_DEFINES
-#include <pic12f675.h>
+#include <pic14regs.h>
 #include <stdint.h> 
 
-////////////////////////////////////////////////////////////////////////
-// MCLR on, Power on Timer, no WDT, int-Oscillator, 
-// no brown out
+#include "alias.h"
 
-__code uint16_t __at (_CONFIG) __configword = 
-  _MCLRE_ON & _PWRTE_OFF & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
+#ifndef PIN_LED
+  #define PIN_LED 5
+#endif
+#define GP_LED _CONCAT(GP,PIN_LED)
 
+CONFIG_WORDS
 
 ////////////////////////////////////////////////////////////////////////
 /*
@@ -54,34 +59,34 @@ static volatile char    on      = 0;
 static void init(void) {
   // configure registers
 
-  __asm__ ("CLRWDT");            // clear WDT even if WDT is disabled
-  ANSEL  = 0;                    // no analog input
-  TRISIO = 0;                    // all GPIOs are output
-  CMCON  = 0x07;                 // disable comparator for GP0-GP2
-  OPTION_REGbits.NOT_GPPU = 1;   // no pullups
-  OPTION_REGbits.T0CS     = 0;   // clear to enable timer mode
-  OPTION_REGbits.PSA      = 0;   // clear to assign prescaler to TMRO
-  OPTION_REGbits.PS2      = 0;   // 010 @ 4Mhz = 2.048 mS
-  OPTION_REGbits.PS1      = 1;
-  OPTION_REGbits.PS0      = 0;
+  __asm__ ("CLRWDT");  // clear WDT even if WDT is disabled
+  ANSEL    = 0;        // no analog input
+  TRISIO   = 0;        // all GPIOs are output
+  CMCON    = 0x07;     // disable comparator for GP0-GP2
+  NOT_GPPU = 1;        // no pullups
+  T0CS     = 0;        // clear to enable timer mode
+  PSA      = 0;        // clear to assign prescaler to TMRO
+  PS2      = 0;        // 010 @ 4Mhz = 2.048 mS
+  PS1      = 1;
+  PS0      = 0;
 
-  GPIObits.GP5            = 0;   // initial value of GP5
+  GP_LED   = 0;        // initial value of GP_LED
 
-  INTCON                  = 0;   // clear interrupt flag bits
-  TMR0                    = 0;   // clear the value in TMR0
-  INTCONbits.T0IE         = 1;   // TMR0 overflow interrupt enable
-  INTCONbits.GIE          = 1;   // global interrupt enable
+  INTCON   = 0;        // clear interrupt flag bits
+  TMR0     = 0;        // clear the value in TMR0
+  T0IE     = 1;        // TMR0 overflow interrupt enable
+  GIE      = 1;        // global interrupt enable
 }
 
 ////////////////////////////////////////////////////////////////////////
 // Interrupt service routine
 
 static void isr(void) __interrupt 0 {
-  if (INTCONbits.T0IE && INTCONbits.T0IF) { 
-    INTCONbits.T0IF = 0;    // Clear timer interrupt flag
-    if (!++counter) {       // flip value of on every 256 interrupts
+  if (T0IE && T0IF) {
+    T0IF = 0;           // Clear timer interrupt flag
+    if (!++counter) {   // flip value of on every 256 interrupts
       on = 1-on;
-      GPIObits.GP5 = on;
+      GP_LED = on;
     }
   }
 }
@@ -93,6 +98,7 @@ static void isr(void) __interrupt 0 {
 //   - do nothing
 
 void main(void) {
+#ifdef __SDCC_PIC12F675
   // Load calibration
   __asm
     bsf  STATUS, RP0
@@ -100,6 +106,11 @@ void main(void) {
     movwf OSCCAL  ; Wert setzen
     bcf  STATUS, RP0
   __endasm;
+#endif
+
+#ifdef __SDCC_PIC12F1840
+  OSCCONbits.IRCF = 0b1101;                 // run at 4MHz
+#endif
 
   init();
   while (1) {

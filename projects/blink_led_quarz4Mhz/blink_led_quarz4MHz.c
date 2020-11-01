@@ -10,26 +10,24 @@
 //
 // --------------------------------------------------------------------------
 
-#define NO_BIT_DEFINES
-#include <pic12f675.h>
+#include <pic14regs.h>
 #include <stdint.h> 
 
-// build with:
-// make build
-
-// MCLR on, Power on Timer, no WDT, int-oscillator, 
-// no brown out
-
-extern void minitime(uint8_t count);   // 0.1 mS
-extern void miditime(uint8_t count);   // 1.0 mS
 extern void maxitime(uint8_t count);   // 250 mS
 
-__code uint16_t __at (_CONFIG) __configword = 
-  _MCLRE_ON & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
+#include "alias.h"
+
+#ifndef PIN_LED
+  #define PIN_LED 5
+#endif
+#define GP_LED _CONCAT(GP,PIN_LED)
+
+CONFIG_WORDS
 
 // --- main program   --------------------------------------------------------
 
 void main(void) {
+#ifdef __SDCC_PIC12F675
   // Load calibration
   __asm
     bsf  STATUS, RP0
@@ -37,12 +35,17 @@ void main(void) {
     movwf OSCCAL  ; Wert setzen
     bcf  STATUS, RP0
   __endasm;
+#endif
+
+#ifdef __SDCC_PIC12F1840
+  OSCCONbits.IRCF = 0b1101;                 // run at 4MHz
+#endif
 
   TRISIO = 0;
   while (1) {
-    GPIObits.GP5 = 1; // LED an
+    GP_LED = 1;       // LED on
     maxitime(2);
-    GPIObits.GP5 = 0; // LED aus
+    GP_LED = 0;       // LED off
     maxitime(2);
   }
 }
