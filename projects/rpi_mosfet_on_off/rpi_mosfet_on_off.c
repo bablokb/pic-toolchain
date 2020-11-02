@@ -2,81 +2,96 @@
 // Use the PIC to turn a Raspberry Pi on or off via a mosfet.
 // 
 // This project uses the following pins:
-//  - PIN_POWER   (GP5): attach to gate of mosfet to turn power on or off
-//  - PIN_SIG1    (GP4): external on/off signal (e.g. from button)
-//  - PIN_SIG2    (GP2): external on/off signal (e.g. from button)
-//  - PIN_TO_PI   (GP1): request shutdown from Pi
 //  - PIN_FROM_PI (GP0): Pi confirms shutdown (PIC can turn off power)
-//
-// build with:
-//   make build
-// flash with
-//   make flash
+//  - PIN_TO_PI   (GP1): request shutdown from Pi
+//  - PIN_SIG2    (GP2): external on/off signal (e.g. from button)
+//  - PIN_SIG1    (GP4): external on/off signal (e.g. from button)
+//  - PIN_POWER   (GP5): attach to gate of mosfet to turn power on or off
 //
 // Author: Bernhard Bablok
 // https://github.com/bablokb/pic-toolchain
 //
 ////////////////////////////////////////////////////////////////////////
 
-#define NO_BIT_DEFINES
-#include <pic12f675.h>
-#include <stdint.h> 
+#include <pic14regs.h>
+#include <stdint.h>
+
+#include "alias.h"
 #include "quarz4MHz.h"
 
-#define PIN_POWER   GPIObits.GP5
-#define PIN_SIG1    GPIObits.GP4
-#define PIN_SIG2    GPIObits.GP2
-#define PIN_TO_PI   GPIObits.GP1
-#define PIN_FROM_PI GPIObits.GP0
+#ifndef PIN_FROM_PI
+  #define PIN_FROM_PI 0
+#endif
+#define GP_FROM_PI _CONCAT(GP,PIN_FROM_PI)
+
+#ifndef PIN_TO_PI
+  #define PIN_TO_PI 1
+#endif
+#define GP_TO_PI _CONCAT(GP,PIN_TO_PI)
+
+#ifndef PIN_SIG2
+  #define PIN_SIG2 2
+#endif
+#define GP_SIG2 _CONCAT(GP,PIN_SIG2)
+
+#ifndef PIN_SIG1
+  #define PIN_SIG1 4
+#endif
+#define GP_SIG1 _CONCAT(GP,PIN_SIG1)
+
+#ifndef PIN_POWER
+  #define PIN_POWER 5
+#endif
+#define GP_POWER _CONCAT(GP,PIN_POWER)
+
 #define BOOT_WAIT   20               // 5s = 20*250ms
 #define POWER_ON    0
 #define POWER_OFF   1
 
-////////////////////////////////////////////////////////////////////////
-// MCLR on, Power on Timer, no WDT, int-Oscillator, 
-// no brown out
-
-__code uint16_t __at (_CONFIG) __configword = 
-  _MCLRE_ON & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
+CONFIG_WORDS
 
 ////////////////////////////////////////////////////////////////////////
 // Intialize registers
 
 static void init(void) {
   // configure registers
-  __asm__ ("CLRWDT");             // clear WDT even if WDT is disabled
-  TRISIO    = 0b010101;           // GP4, GP2, GP0 are input
-  ANSEL     = 0;                  // no analog input
-  CMCON     = 0x07;               // disable comparator for GP0-GP2
-  WPU       = 0b010100;           // weak pullups enable on GP2, GP4
-  IOC       = 0b010101;           // IOC on GP0, GP2, GP4
+  __asm__ ("CLRWDT");                  // clear WDT even if WDT is disabled
+  TRISIO   = (1<<PIN_FROM_PI) +
+    (1<<PIN_SIG1) + (1<<PIN_SIG2);     // GP4, GP2, GP0 are input
+  WPU      = 
+    (1<<PIN_SIG1) + (1<<PIN_SIG2);     // pullups for the GP4/GP2 pins
+  NOT_GPPU = 0;                        // enable pullups
+  IOC      = TRISIO;                   // IOC for all input pins
 
-  OPTION_REGbits.NOT_GPPU = 0;    // enable pullups
-  GPIO                    = 0;    // initial value of GPIOs
-  PIN_POWER       = POWER_OFF;    //  except PIN_POWER
-  PIN_TO_PI               = 1;    //  except PIN_TO_PI
-  INTCON                  = 0;    // clear interrupt flag bits
-  INTCONbits.GPIE         = 1;    // enable IOC
-  INTCONbits.GIE          = 1;    // global interrupt enable
+  ANSEL    = 0;                        // no analog input
+  CMCON    = 0x07;                     // disable comparator for GP0-GP2
+
+  GPIO     = 0;                        // initial value of GPIOs
+  GP_POWER = POWER_OFF;                //    except GP_POWER
+  GP_TO_PI = 1;                        //    except GP_TO_PI
+
+  INTCON   = 0;                        // clear interrupt flag bits
+  GPIE     = 1;                        // enable IOC
+  GIE      = 1;                        // global interrupt enable
 }
 
 ////////////////////////////////////////////////////////////////////////
 // Interrupt service routine
 
 static void isr(void) __interrupt 0 {
-  if (INTCONbits.GPIF) {                  // interrupt-on-change
-    if (!PIN_SIG1||!PIN_SIG2) {           // SIG1 or SIG2 is low
-      if (PIN_POWER == POWER_OFF) {       // power is off:
-        PIN_POWER = POWER_ON;             //   turn power on and
-        maxitime(BOOT_WAIT);              //   wait until Pi is up
-      } else {                            // power is on:
-        PIN_TO_PI = 0;                    //   signal shutdown to Pi
+  if (GPIF) {                            // interrupt-on-change
+    if (!GP_SIG1||!GP_SIG2) {            // SIG1 or SIG2 is low
+      if (GP_POWER == POWER_OFF) {       // power is off:
+        GP_POWER = POWER_ON;             //   turn power on and
+        maxitime(BOOT_WAIT);             //   wait until Pi is up
+      } else {                           // power is on:
+        GP_TO_PI = 0;                    //   signal shutdown to Pi
       }
-    } else if (PIN_FROM_PI) {             // High: shutdown complete
-      PIN_POWER = POWER_OFF;              // turn power off
-      PIN_TO_PI = 1;                      // and restore initial state
+    } else if (GP_FROM_PI) {             // High: shutdown complete
+      GP_POWER = POWER_OFF;              // turn power off
+      GP_TO_PI = 1;                      // and restore initial state
     }
-    INTCONbits.GPIF = 0;                  // clear IOC interrupt flag
+    GPIF = 0;                            // clear IOC interrupt flag
   }
   maxitime(1);  // wait 250ms (debounce)
 }
@@ -88,6 +103,7 @@ static void isr(void) __interrupt 0 {
 //   - go to sleep
 
 void main(void) {
+#ifdef __SDCC_PIC12F675
   // Load calibration
   __asm
     bsf  STATUS, RP0
@@ -95,6 +111,7 @@ void main(void) {
     movwf OSCCAL  ; set value
     bcf  STATUS, RP0
   __endasm;
+#endif
 
   init();
   while (1) {
