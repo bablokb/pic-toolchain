@@ -48,7 +48,6 @@ static void init(void) {
   CMCON  = 0x07;                       // disable comparator for GP0-GP2
 
   INTCON = 0;                          // clear interrupt flag bits
-  INTEDG = 1;                          // IOC falling edge
   GP_LED = 0;                          // turn off LED
   GPIE   = 1;                          // port-change enable
   GIE    = 1;                          // global interrupt enable
