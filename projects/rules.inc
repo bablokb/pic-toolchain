@@ -57,15 +57,15 @@ mcheck:
 	  echo "MODEL not specified, aborting"; exit 3; \
 	fi
 
-alias.h:
-	@echo "creating alias.h"
-	@echo '#include "alias_$(MODEL).h"' > alias.h
+picconfig.h:
+	@echo "creating picconfig.h"
+	@echo '#include "picconfig_$(MODEL).h"' > picconfig.h
 
-alias.inc:
-	@echo "creating alias.inc"
-	@echo '#include "p$(MODEL).inc"' > alias.inc
+picconfig.inc:
+	@echo "creating picconfig.inc"
+	@echo '#include "p$(MODEL).inc"' > picconfig.inc
 
-build: mcheck alias.h alias.inc $(PROJECT).hex
+build: mcheck picconfig.h picconfig.inc $(PROJECT).hex
 
 flash: $(PROJECT).hex
 	pkcmd-lx -w -ppic$(MODEL) -f $(PROJECT).hex -mpc
@@ -74,7 +74,7 @@ flash2: $(PROJECT).hex
 	pk2cmd -Ppic$(MODEL) -X -M -F $(PROJECT).hex
 
 clean:
-	@rm -f model.mk alias.h alias.inc *.o *.cod *.lst *.map *.hex \
+	@rm -f model.mk picconfig.h picconfig.inc *.o *.cod *.lst *.map *.hex \
               $(PROJECT).asm $(patsubst %.c,%.asm,$(EXTRA_C)) $(EXTRA_CLEAN)
 
 

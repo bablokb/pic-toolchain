@@ -2,7 +2,7 @@
 ;## UP'e für Zeitverzögerungen mit Quarz 4,000 MHz /4 = 1 MHz :
 ;## Zykluszeit = 1/1000000 Hz = 1,0 µs                         
 ;#################################################################
-#include   <alias.inc>
+#include   <picconfig.inc>
 
         global  _minitime, _miditime, _maxitime
         udata

@@ -8,7 +8,7 @@
 #include <pic14regs.h>
 #include <stdint.h> 
 
-#include "alias.h"
+#include "picconfig.h"
 
 #ifndef PIN_LED
   #define PIN_LED 5

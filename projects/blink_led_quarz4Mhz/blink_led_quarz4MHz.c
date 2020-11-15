@@ -15,7 +15,7 @@
 
 extern void maxitime(uint8_t count);   // 250 mS
 
-#include "alias.h"
+#include "picconfig.h"
 
 #ifndef PIN_LED
   #define PIN_LED 5
