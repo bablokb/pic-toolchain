@@ -13,10 +13,13 @@
 #ifndef PICCONFIG_12F683_H
   #define PICCONFIG_12F683_H
 
-  #define CMCON      CMCON0
-  
-  #define CONFIG_WORDS \
-  __code uint16_t __at (_CONFIG) __configword = \
-    MCLR & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BOD_OFF;
+  #ifdef __SDCC
+    #include <pic14regs.h>
 
+    #define CMCON      CMCON0
+
+    #define CONFIG_WORDS \
+      __code uint16_t __at (_CONFIG) __configword = \
+          MCLR & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BOD_OFF;
+  #endif
 #endif
