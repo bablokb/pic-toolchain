@@ -5,10 +5,8 @@
 //
 // --------------------------------------------------------------------------
 
-#include <pic14regs.h>
-#include <stdint.h> 
-
 #include "picconfig.h"
+#include <stdint.h>
 
 #ifndef PIN_LED
   #define PIN_LED 5

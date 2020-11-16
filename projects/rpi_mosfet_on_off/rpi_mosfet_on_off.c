@@ -13,10 +13,9 @@
 //
 ////////////////////////////////////////////////////////////////////////
 
-#include <pic14regs.h>
+#include "picconfig.h"
 #include <stdint.h>
 
-#include "picconfig.h"
 #include "quarz4MHz.h"
 
 #ifndef PIN_FROM_PI

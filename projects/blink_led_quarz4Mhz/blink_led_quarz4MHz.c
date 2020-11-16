@@ -10,12 +10,10 @@
 //
 // --------------------------------------------------------------------------
 
-#include <pic14regs.h>
+#include "picconfig.h"
 #include <stdint.h> 
 
 extern void maxitime(uint8_t count);   // 250 mS
-
-#include "picconfig.h"
 
 #ifndef PIN_LED
   #define PIN_LED 5
