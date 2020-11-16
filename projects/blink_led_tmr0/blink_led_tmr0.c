@@ -110,6 +110,10 @@ void main(void) {
   OSCCONbits.IRCF = 0b1101;                 // run at 4MHz
 #endif
 
+#ifdef __SDCC_PIC12F1612
+  OSCCONbits.IRCF = 0b1101;                 // run at 4MHz
+#endif
+
   init();
   while (1) {
     // don't sleep here, because sleep deactivates timer-interrupt

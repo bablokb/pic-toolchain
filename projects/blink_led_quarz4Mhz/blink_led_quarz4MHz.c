@@ -39,6 +39,10 @@ void main(void) {
   OSCCONbits.IRCF = 0b1101;                 // run at 4MHz
 #endif
 
+#ifdef __SDCC_PIC12F1612
+  OSCCONbits.IRCF = 0b1101;                 // run at 4MHz
+#endif
+
   TRISIO = 0;
   while (1) {
     GP_LED = 1;       // LED on
