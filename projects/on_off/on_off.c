@@ -72,16 +72,7 @@ static void isr(void) __interrupt 0 {
 //   - go to sleep
 
 void main(void) {
-#ifdef __SDCC_PIC12F675
-  // Load calibration
-  __asm
-    bsf  STATUS, RP0
-    call 0x3ff    ; Wert auslesen
-    movwf OSCCAL  ; Wert setzen
-    bcf  STATUS, RP0
-  __endasm;
-#endif
-
+  INIT_SPECIAL;
   init();
   while (1) {
     __asm__("SLEEP");
