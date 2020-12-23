@@ -37,7 +37,8 @@ CONFIG_WORDS
 static void init(void) {
   // configure registers
   __asm__ ("CLRWDT");                  // clear WDT even if WDT is disabled
-  TRISIO = (1<<PIN_ON) + (1<<PIN_OFF); // all GPIOs are output except: on/off
+  bitset(TRISIO,PIN_ON);               // all GPIOs are output except: on/off
+  bitset(TRISIO,PIN_OFF);
   WPU    = TRISIO;                     // pullups for on/off GPs
   NOT_GPPU = 0;                        // enable pullups
   IOC    = TRISIO;                     // IOC for on/off GPs
