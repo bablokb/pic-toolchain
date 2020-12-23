@@ -15,6 +15,13 @@
 
   #ifdef __SDCC
     #include <pic14regs.h>
+    #include "picconfig_default.h"
+
+    // special initialization (empty)
+    #define INIT_SPECIAL
+
+    // run at 4MHz (empty, since it is the default)
+    #define CLOCK_4MHZ
 
     #define CMCON      CMCON0
 

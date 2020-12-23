@@ -15,8 +15,20 @@
 
   #ifdef __SDCC
     #include <pic14regs.h>
+    #include "picconfig_default.h"
 
+    // special initialization
     #undef RP0
+    #define INIT_SPECIAL \
+      __asm \
+        bsf  STATUS, RP0 \
+        call 0x3ff    ; Wert auslesen \
+        movwf OSCCAL  ; Wert setzen \
+        bcf  STATUS, RP0 \
+      __endasm;
+
+    // run at 4MHz (empty, since it is the default)
+    #define CLOCK_4MHZ
 
     #define CONFIG_WORDS \
       __code uint16_t __at (_CONFIG) __configword = \

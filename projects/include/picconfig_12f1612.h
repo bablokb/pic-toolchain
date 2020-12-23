@@ -15,6 +15,14 @@
 
   #ifdef __SDCC
     #include <pic14regs.h>
+    #include "picconfig_default.h"
+
+    // special initialization (empty)
+    #define INIT_SPECIAL
+
+    // run at 4MHz
+    #define CLOCK_4MHZ \
+      OSCCONbits.IRCF = 0b1101;                 // run at 4MHz
 
     #define CMCON    CM1CON0
     #define ANSEL    ANSELA
