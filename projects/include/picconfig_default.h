@@ -12,4 +12,6 @@
 #ifndef PICCONFIG_DEF_H
   #define PICCONFIG_DEF_H
 
+  #define bitset(var, bitno) ((var) |= 1UL << (bitno))
+  #define bitclr(var, bitno) ((var) &= ~(1UL << (bitno)))
 #endif
