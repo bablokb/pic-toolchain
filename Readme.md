@@ -24,8 +24,14 @@ Example Programs
 ================
 
 The directory `projects` contains a number of sample projects.
-Be sure to copy also the file `projects/rules.inc` (generic makefile-rules)
-and the directory `projects/include` used by all projects.
+You must copy (install) the rule-files `projects/ptc_rules*.inc`
+(generic makefile-rules) to a system-include directory automatically
+searched by `make`, e.g. `/usr/local/include` or add the `-I dir` option
+to the invocation of `make`.
+
+The directory `projects/include` contains `.h`-files (c-includes)
+used by all projects. You should also copy (install) these files to
+`/usr/local/include` if you want to use these files in other projects.
 
 The projects demonstrate various aspects, e.g. how to embbed assembler code
 into C-code, or link with preexisting assembler-code.
