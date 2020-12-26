@@ -13,6 +13,6 @@ EXTRA_ASM=delay.asm quarz4MHz.asm
 MODEL=12f675
 ARCH=pic14
 
-include ../rules.inc
+include ptc_rules.inc
 
 # --------------------------------------------------------------------------

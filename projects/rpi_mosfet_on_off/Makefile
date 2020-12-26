@@ -12,7 +12,7 @@ EXTRA_ASM=quarz4MHz.asm
 MODEL=12f675
 ARCH=pic14
 
-include ../rules.inc
+include ptc_rules.inc
 MCLR=_MCLRE_ON
 
 # --------------------------------------------------------------------------

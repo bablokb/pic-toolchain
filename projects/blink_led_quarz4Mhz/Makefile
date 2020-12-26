@@ -17,6 +17,6 @@ ARCH=pic14
 PIN_LED=5
 SDCC_ARGS=-DPIN_LED=$(PIN_LED)
 
-include ../rules.inc
+include ptc_rules.inc
 
 # --------------------------------------------------------------------------

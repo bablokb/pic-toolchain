@@ -21,7 +21,7 @@ MCLR=_MCLRE_OFF
 # --- includes   -----------------------------------------------------------
 
 rules_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-include $(rules_dir)rules_$(TC).inc
+include $(rules_dir)ptc_rules_$(TC).inc
 ifneq ($(@),default)
 ifneq ($(@),)
 include model.mk

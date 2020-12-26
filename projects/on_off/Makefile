@@ -10,6 +10,6 @@
 PROJECT=on_off
 ARCH=pic14
 
-include ../rules.inc
+include ptc_rules.inc
 
 # --------------------------------------------------------------------------
