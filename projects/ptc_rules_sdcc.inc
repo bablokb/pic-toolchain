@@ -15,7 +15,8 @@ OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM)) \
 # --- pattern  -------------------------------------------------------------
 
 .c.o:
-	sdcc --use-non-free -m$(ARCH) -p$(MODEL) -I../include \
+	sdcc --use-non-free -m$(ARCH) -p$(MODEL) \
+            -I../include -I /usr/local/include \
 	     -Wa -w1 -DMCLR=$(MCLR) $(SDCC_ARGS) $(CPPFLAGS) $(CFLAGS) -c $<
 
 $(patsubst %.asm,%.o,$(EXTRA_ASM)): %.o: %.asm
