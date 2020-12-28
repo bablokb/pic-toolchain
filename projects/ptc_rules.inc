@@ -22,9 +22,11 @@ MCLR=_MCLRE_OFF
 
 rules_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 include $(rules_dir)ptc_rules_$(TC).inc
-ifneq ($(@),default)
-ifneq ($(@),)
+ifneq ($(MAKECMDGOALS),default)
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),)
 include model.mk
+endif
 endif
 endif
 
