@@ -9,10 +9,9 @@
 
 PROJECT=rpi_mosfet_on_off
 EXTRA_ASM=quarz4MHz.asm
-MODEL=12f675
 ARCH=pic14
 
 include ptc_rules.inc
-MCLR=_MCLRE_ON
+MCLR=ON
 
 # --------------------------------------------------------------------------
