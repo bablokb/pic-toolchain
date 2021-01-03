@@ -20,7 +20,7 @@ CONFIG_WORDS
 void delay(uint16_t iterations) {
   uint16_t i;
   for (i = 0; i < iterations; i++) {
-    __asm nop __endasm;       // add a no-op to prevent removal by optimization
+    __asm__("nop");          // add a no-op to prevent removal by optimization
   }
 }
 
