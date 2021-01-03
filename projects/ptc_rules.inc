@@ -16,11 +16,10 @@ default:
 # --- configuration   ------------------------------------------------------
 
 TC=sdcc
+include tc.mk
 
 # --- includes   -----------------------------------------------------------
 
-rules_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-include $(rules_dir)ptc_rules_$(TC).inc
 ifneq ($(MAKECMDGOALS),default)
 ifneq ($(MAKECMDGOALS),clean)
 ifneq ($(MAKECMDGOALS),)
@@ -32,6 +31,14 @@ endif
 # --- targets   ------------------------------------------------------------
 
 .PH0NY: mcheck flash flash2 clean
+
+tc.mk:
+	@echo -en "creating tc.mk ... "
+	@if [ -z "$(TC)" ]; then \
+          echo "toolchain $$TC undefined, aborting!"; rm -f tc.mk; exit 3; \
+	else \
+	  echo "include ptc_rules_$(TC).inc" > tc.mk; \
+	fi
 
 model.mk:
 	@echo -en "creating model.mk ... "
