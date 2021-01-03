@@ -32,7 +32,8 @@ $(PROJECT).hex: $(OBJS)
 # --- targets   ------------------------------------------------------------
 
 clean:
-	@rm -f model.mk picconfig.h picconfig.inc *.o *.cod *.lst *.map *.hex \
+	@rm -f tc.mk model.mk picconfig.h picconfig.inc \
+            *.o *.cod *.lst *.map *.hex \
               $(PROJECT).asm $(patsubst %.c,%.asm,$(EXTRA_C)) $(EXTRA_CLEAN)
 
 
