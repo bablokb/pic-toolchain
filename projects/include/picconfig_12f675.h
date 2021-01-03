@@ -16,7 +16,6 @@
   #include "picconfig_default.h"
 
   #ifdef __SDCC
-    #include <pic14regs.h>
     #define CONFIG_WORDS \
       __code uint16_t __at (_CONFIG) __configword = \
         MCLR & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
@@ -30,9 +29,6 @@
         bcf  STATUS, RP0 \
       __endasm;
   #elif defined __XC8
-    #include <xc.h>
-    #define CONFIG_WORDS
-    #define INIT_SPECIAL
     #pragma config MCLRE = MCLR, PWRTE = ON, WDTE = OFF, FOSC = INTRCIO
     #pragma config BOREN = OFF
   #endif
