@@ -11,21 +11,13 @@
 //
 // --------------------------------------------------------------------------
 
-#define NO_BIT_DEFINES
-#include <pic12f675.h>
+#include "picconfig.h"
 #include <stdint.h> 
 
 #include "softuart.h"
 #include "quarz4MHz.h"
 
-// build with:
-// make build
-
-// MCLR on, Power on Timer, no WDT, int-oscillator, 
-// no brown out
-
-__code uint16_t __at (_CONFIG) __configword = 
-  _MCLRE_ON & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
+CONFIG_WORDS
 
 ////////////////////////////////////////////////////////////////////////
 // Intialize registers
@@ -41,20 +33,13 @@ static void init(void) {
 
   softuart_init();               // configure RX,TX pins (GP2,GP0)
 
-  INTCON                 = 0;    // clear interrupt flag bits
+  INTCON = 0;                    // clear interrupt flag bits
 }
 
 // --- main program   --------------------------------------------------------
 
 void main(void) {
-  // Load calibration
-  __asm
-    bsf  STATUS, RP0
-    call 0x3ff    ; read value
-    movwf OSCCAL  ; set  value
-    bcf  STATUS, RP0
-  __endasm;
-
+  INIT_SPECIAL;
   init();
   while (1) {
     softuart_print("Hallo\n");  // send message
