@@ -13,10 +13,13 @@
 #ifndef PICCONFIG_12F675_H
   #define PICCONFIG_12F675_H
 
+  #include "picconfig_default.h"
+
   #ifdef __SDCC
     #include <pic14regs.h>
-    #include "picconfig_default.h"
-
+    #define CONFIG_WORDS \
+      __code uint16_t __at (_CONFIG) __configword = \
+        MCLR & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
     // special initialization
     #undef RP0
     #define INIT_SPECIAL \
@@ -26,12 +29,15 @@
         movwf OSCCAL  ; Wert setzen \
         bcf  STATUS, RP0 \
       __endasm;
-
-    // run at 4MHz (empty, since it is the default)
-    #define CLOCK_4MHZ
-
-    #define CONFIG_WORDS \
-      __code uint16_t __at (_CONFIG) __configword = \
-        MCLR & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
+  #elif defined __XC8
+    #include <xc.h>
+    #define CONFIG_WORDS
+    #define INIT_SPECIAL
+    #pragma config MCLRE = MCLR, PWRTE = ON, WDTE = OFF, FOSC = INTRCIO
+    #pragma config BOREN = OFF
   #endif
+
+  // run at 4MHz (empty, since it is the default)
+  #define CLOCK_4MHZ
+
 #endif
