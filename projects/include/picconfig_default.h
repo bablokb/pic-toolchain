@@ -18,6 +18,9 @@
 
   #ifdef __SDCC
     #include <pic14regs.h>
+    #ifndef asm
+      #define asm(code) __asm__(code)
+    #endif
   #elif defined __XC8
     #include <xc.h>
     #define CONFIG_WORDS
