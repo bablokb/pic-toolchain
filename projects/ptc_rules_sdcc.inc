@@ -7,8 +7,11 @@
 #
 # --------------------------------------------------------------------------
 
+$(info including ptc_rules_sdcc.inc)
+
 # --- configuration   ------------------------------------------------------
 
+MCLR=OFF
 OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM)) \
                   $(patsubst %.c,%.o,$(EXTRA_C))
 
@@ -17,7 +20,7 @@ OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM)) \
 .c.o:
 	sdcc --use-non-free -m$(ARCH) -p$(MODEL) \
             -I../include -I /usr/local/include \
-	     -Wa -w1 -DMCLR=$(MCLR) $(SDCC_ARGS) $(CPPFLAGS) $(CFLAGS) -c $<
+	     -Wa -w1 -DMCLR=_MCLRE_$(MCLR) $(SDCC_ARGS) $(CPPFLAGS) $(CFLAGS) -c $<
 
 $(patsubst %.asm,%.o,$(EXTRA_ASM)): %.o: %.asm
 	gpasm -p$(MODEL) -c $<
