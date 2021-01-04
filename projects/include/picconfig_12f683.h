@@ -13,20 +13,21 @@
 #ifndef PICCONFIG_12F683_H
   #define PICCONFIG_12F683_H
 
+  #include "picconfig_default.h"
+
   #ifdef __SDCC
-    #include <pic14regs.h>
-    #include "picconfig_default.h"
-
-    // special initialization (empty)
-    #define INIT_SPECIAL
-
-    // run at 4MHz (empty, since it is the default)
-    #define CLOCK_4MHZ
-
-    #define CMCON      CMCON0
-
     #define CONFIG_WORDS \
       __code uint16_t __at (_CONFIG) __configword = \
           MCLR & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BOD_OFF;
+    // special initialization (empty)
+    #define INIT_SPECIAL
+  #elif defined __XC8
+    #pragma config MCLRE = MCLR, PWRTE = ON, WDTE = OFF, FOSC = INTOSCIO
+    #pragma config BOREN = OFF
   #endif
+
+  // run at 4MHz (empty, since it is the default)
+  #define CLOCK_4MHZ
+
+  #define CMCON CMCON0
 #endif
