@@ -5,19 +5,19 @@
 #include   "picconfig.inc"
 
         global  _minitime, _miditime, _maxitime
-        udata
-miniteil	res 1
-miditeil	res 1
-maxiteil	res 1
-time0           res 1
-time1           res 1
-time2           res 1
+PSECT udata_bank0
+miniteil:       DS 1
+miditeil:       DS 1
+maxiteil:       DS 1
+time0:          DS 1
+time1:          DS 1
+time2:          DS 1
         
 ;#################################################################
 ;mini-, midi- oder maxitime: Verzögerung x-mal 100µs, 1ms oder 1/4s
 ;"x" (dezimal) muß als Parameter in W vorher geladen worden sein
 ;#################################################################
-        code
+psect code
 _minitime:
 	movwf	miniteil		;"x"=W=miniteil
 mm0:    call	time100		;100µs Verzögerung
