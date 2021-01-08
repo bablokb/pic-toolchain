@@ -33,6 +33,11 @@ $(PROJECT).hex: $(OBJ_C) $(OBJ_A)
 
 # --- targets   ------------------------------------------------------------
 
+picconfig.inc:
+	@echo "creating picconfig.inc"
+	@echo '#include "xc.inc"' > picconfig.inc
+	@echo '#define Z STATUS_Z_POSITION' >> picconfig.inc
+
 clean:
 	@rm -f tc.mk model.mk picconfig.h picconfig.inc \
             *.obj *.as *.pre *.d *.p1 *.cmf *.lst *.map *.hex *.elf *.hxl \

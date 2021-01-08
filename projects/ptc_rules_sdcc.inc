@@ -31,6 +31,13 @@ $(PROJECT).hex: $(OBJS)
 
 # --- targets   ------------------------------------------------------------
 
+picconfig.inc:
+	@echo "creating picconfig.inc"
+	@echo '#include "p$(MODEL).inc"' > picconfig.inc
+	@echo '#define udata_bank0 udata' >> picconfig.inc
+	@echo '#define DS RES' >> picconfig.inc
+	@echo '#define PSECT' >> picconfig.inc
+
 clean:
 	@rm -f tc.mk model.mk picconfig.h picconfig.inc \
             *.o *.cod *.lst *.map *.hex \
