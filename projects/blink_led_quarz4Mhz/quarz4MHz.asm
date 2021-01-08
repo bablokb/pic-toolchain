@@ -17,7 +17,7 @@ time2:          DS 1
 ;mini-, midi- oder maxitime: Verzögerung x-mal 100µs, 1ms oder 1/4s
 ;"x" (dezimal) muß als Parameter in W vorher geladen worden sein
 ;#################################################################
-psect code
+PSECT code
 _minitime:
 	movwf	miniteil		;"x"=W=miniteil
 mm0:    call	time100		;100µs Verzögerung
