@@ -1,67 +1,67 @@
 ;#################################################################
-;## UP'e für Zeitverzögerungen mit Quarz 4,000 MHz /4 = 1 MHz :
-;## Zykluszeit = 1/1000000 Hz = 1,0 µs                         
+;## UP'e fÃ¼r ZeitverzÃ¶gerungen mit Quarz 4,000 MHz /4 = 1 MHz :
+;## Zykluszeit = 1/1000000 Hz = 1,0 Âµs
 ;#################################################################
-#include   <P12f675.INC>
+#include   "picconfig.inc"
 
         global  _minitime, _miditime, _maxitime
-        udata
-miniteil	res 1
-miditeil	res 1
-maxiteil	res 1
-time0           res 1
-time1           res 1
-time2           res 1
+PSECT udata_bank0
+miniteil:       DS 1
+miditeil:       DS 1
+maxiteil:       DS 1
+time0:          DS 1
+time1:          DS 1
+time2:          DS 1
         
 ;#################################################################
-;mini-, midi- oder maxitime: Verzögerung x-mal 100µs, 1ms oder 1/4s
-;"x" (dezimal) muß als Parameter in W vorher geladen worden sein
+;mini-, midi- oder maxitime: VerzÃ¶gerung x-mal 100Âµs, 1ms oder 1/4s
+;"x" (dezimal) muÃŸ als Parameter in W vorher geladen worden sein
 ;#################################################################
-        code
-_minitime
+PSECT code
+_minitime:
 	movwf	miniteil		;"x"=W=miniteil
-mm0	call	time100		;100µs Verzögerung
+mm0:    call	time100		;100Âµs VerzÃ¶gerung
 	decf	miniteil,F		;miniteil=miniteil-1
-	btfss	STATUS,Z	;wenn Z=1, überspringe nä. Bef.
+	btfss	STATUS,Z	;wenn Z=1, Ã¼berspringe nÃ¤. Bef.
 	goto	mm0		;Z=0, miniteil>0
-	return			;Z=1, miniteil=0, Verzögerung erreicht
+	return			;Z=1, miniteil=0, VerzÃ¶gerung erreicht
 ;
-_miditime
+_miditime:
 	movwf	miditeil		;"x"=W=miditeil
-mm1	call	time1ms		;1ms Verzögerung
+mm1:    call	time1ms		;1ms VerzÃ¶gerung
 	decf	miditeil,F		;miditeil=miditeil-1
-	btfss	STATUS,Z	;wenn Z=1, überspringe nä. Bef.
+	btfss	STATUS,Z	;wenn Z=1, Ã¼berspringe nÃ¤. Bef.
 	goto	mm1		;Z=0, miditeil>0
-	return			;Z=1, miditeil=0, Verzögerung erreicht
+	return			;Z=1, miditeil=0, VerzÃ¶gerung erreicht
 ;
-_maxitime
+_maxitime:
 	movwf	maxiteil		;"x"=W=maxiteil
-mm2	call	time250ms	;250ms Verzögerung
+mm2:    call	time250ms	;250ms VerzÃ¶gerung
 	decf	maxiteil,F		;maxiteil=maxiteil-1
-	btfss	STATUS,Z	;wenn Z=1, überspringe nä. Bef.
+	btfss	STATUS,Z	;wenn Z=1, Ã¼berspringe nÃ¤. Bef.
 	goto	mm2		;Z=0, maxiteil>0
-	return			;Z=1, maxiteil=0, Verzögerung erreicht
+	return			;Z=1, maxiteil=0, VerzÃ¶gerung erreicht
 ;
 ;#################################################################
-;UP time100: Zeitschleife 100 µs (23x4=92+8=100 Zyklen a 1 µs)
+;UP time100: Zeitschleife 100 Âµs (23x4=92+8=100 Zyklen a 1 Âµs)
 ;#################################################################
-time100
+time100:
 	movlw	0x17		;W =17 hex , =23 dez
 	movwf	time0		;w->time0
-m0	decf	time0,F		;time0 decrem., wenn 0, Z=1
-	btfss	STATUS,Z	;wenn Z=1, überspringe nä. Bef.
+m0:     decf	time0,F		;time0 decrem., wenn 0, Z=1
+	btfss	STATUS,Z	;wenn Z=1, Ã¼berspringe nÃ¤. Bef.
 	goto	m0		;Z=0, weil time0 > 0, springe zu m0
 	nop			;Z=1, weil time0 = 0
 	nop			;
 	return			;UP-Ende
 ;
 ;#################################################################
-;UP time1ms: Zeitschleife 1 ms (248x4=992+8=1000 Zyklen a 1µs) 
+;UP time1ms: Zeitschleife 1 ms (248x4=992+8=1000 Zyklen a 1Âµs)
 ;#################################################################
-time1ms
+time1ms:
 	movlw	0xf8		;W =F8 hex , =248 dez
 	movwf	time1		;w->time1
-m1	decf	time1,F		;time1 decrem., wenn 0, Z=1
+m1:     decf	time1,F		;time1 decrem., wenn 0, Z=1
 	btfss	STATUS,Z	;
 	goto	m1		;
 	nop
@@ -69,14 +69,14 @@ m1	decf	time1,F		;time1 decrem., wenn 0, Z=1
 	return			;UP-Ende
 ;
 ;#################################################################
-;UP time250ms: Zeitschleife 250 ms (250x1ms=250ms+6µs)
+;UP time250ms: Zeitschleife 250 ms (250x1ms=250ms+6Âµs)
 ;#################################################################
-time250ms
+time250ms:
 	movlw	0xfa		;W =FA hex , =250 dez
 	movwf	time2		;w->time2
-m2	call	time1ms		;Zeitverzögerung 1ms
+m2:     call	time1ms		;ZeitverzÃ¶gerung 1ms
 	decf	time2,F		;time2 decrem., wenn 0, Z=1
-	btfss	STATUS,Z	;wenn Z=1, überspringe nä. Bef.
+	btfss	STATUS,Z	;wenn Z=1, Ã¼berspringe nÃ¤. Bef.
 	goto	m2
 	return
 ;
