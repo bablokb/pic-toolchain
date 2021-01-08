@@ -12,22 +12,24 @@ $(info including ptc_rules_xc8.inc)
 # --- configuration   ------------------------------------------------------
 
 MCLR=OFF
-OBJS=$(PROJECT).obj $(patsubst %.asm,%.obj,$(EXTRA_ASM)) \
-                  $(patsubst %.c,%.obj,$(EXTRA_C))
+OBJ_C=$(PROJECT).obj $(patsubst %.c,%.obj,$(EXTRA_C))
+OBJ_A=$(patsubst %.asm,%.obj,$(EXTRA_ASM))
 
 # --- pattern  -------------------------------------------------------------
 
-$(OBJS): %.obj: %.c
+$(OBJ_C): %.obj: %.c
 	xc8 --chip=$(MODEL) \
             -I../include -I/usr/local/include \
 	        -DMCLR=$(MCLR) $(SDCC_ARGS) $(CPPFLAGS) $(CFLAGS) -c $<
 
-$(patsubst %.asm,%.obj,$(EXTRA_ASM)): %.obj: %.asm
-	xc8 --chip=$(MODEL) -c $<
-
-$(PROJECT).hex: $(OBJS)
+$(OBJ_A): %.obj: %.asm
 	xc8 --chip=$(MODEL) \
-              -o$(PROJECT).hex $(OBJS)
+            -I../include -I/usr/local/include \
+                -p -c $<
+
+$(PROJECT).hex: $(OBJ_C) $(OBJ_A)
+	xc8 --chip=$(MODEL) \
+              -o$(PROJECT).hex $(OBJ_C) $(OBJ_A)
 
 # --- targets   ------------------------------------------------------------
 
