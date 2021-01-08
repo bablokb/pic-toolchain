@@ -21,9 +21,18 @@
           MCLR & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BOD_OFF;
     // special initialization (empty)
     #define INIT_SPECIAL
+
+    #ifndef nGPPU
+      #define nGPPU NOT_GPPU
+    #endif
+
   #elif defined __XC8
     #pragma config MCLRE = MCLR, PWRTE = ON, WDTE = OFF, FOSC = INTOSCIO
     #pragma config BOREN = OFF
+
+    #ifndef NOT_GPPU
+      #define NOT_GPPU nGPPU
+    #endif
   #endif
 
   // run at 4MHz (empty, since it is the default)

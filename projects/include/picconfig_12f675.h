@@ -28,12 +28,20 @@
         movwf OSCCAL  ; Wert setzen \
         bcf  STATUS, RP0 \
       __endasm;
+
+    #ifndef nGPPU
+      #define nGPPU NOT_GPPU
+    #endif
+
   #elif defined __XC8
     #pragma config MCLRE = MCLR, PWRTE = ON, WDTE = OFF, FOSC = INTRCIO
     #pragma config BOREN = OFF
+
+    #ifndef NOT_GPPU
+      #define NOT_GPPU nGPPU
+    #endif
   #endif
 
   // run at 4MHz (empty, since it is the default)
   #define CLOCK_4MHZ
-
 #endif

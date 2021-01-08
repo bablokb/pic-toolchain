@@ -23,9 +23,25 @@
       __code uint16_t __at (_CONFIG1) __configword1 = \
         MCLR & _PWRTE_ON & _WDTE_OFF & _CLKOUTEN_OFF & _BOREN_OFF & _FOSC_INTOSC; \
       __code uint16_t __at (_CONFIG2) __configword2 = _LVP_OFF & _DEBUG_OFF;
+
+    #ifndef NOT_GPPU
+      #define NOT_GPPU NOT_WPUEN
+    #endif
+    #ifndef nWPUEN
+      #define nWPUEN   NOT_WPUEN
+    #endif
+
   #elif defined __XC8
     #pragma config MCLRE = MCLR, PWRTE = ON, WDTE = OFF, FOSC = INTOSC
     #pragma config CLKOUTEN = OFF, BOREN = OFF, LVP = OFF
+
+    #ifndef NOT_GPPU
+      #define NOT_GPPU nWPUEN
+    #endif
+    #ifndef NOT_WPUEN
+      #define NOT_WPUEN nWPUEN
+    #endif
+
   #endif
 
   // run at 4MHz
@@ -40,7 +56,6 @@
   #define IOC      IOCAN
   #define GPIE     IOCIE
   #define GPIF     IOCIF
-  #define NOT_GPPU NOT_WPUEN
   
   #define GP0      RA0
   #define GP1      RA1
