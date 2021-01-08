@@ -63,10 +63,6 @@ picconfig.h:
 	@echo "creating picconfig.h"
 	@echo '#include "picconfig_$(MODEL).h"' > picconfig.h
 
-picconfig.inc:
-	@echo "creating picconfig.inc"
-	@echo '#include "p$(MODEL).inc"' > picconfig.inc
-
 build: mcheck picconfig.h picconfig.inc $(PROJECT).hex
 
 flash: $(PROJECT).hex
