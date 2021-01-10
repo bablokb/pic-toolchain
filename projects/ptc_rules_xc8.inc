@@ -12,13 +12,13 @@ $(info including ptc_rules_xc8.inc)
 # --- configuration   ------------------------------------------------------
 
 MCLR=OFF
-OBJ_C=$(PROJECT).obj $(patsubst %.c,%.obj,$(EXTRA_C))
+OBJ_C=$(PROJECT).p1 $(patsubst %.c,%.p1,$(EXTRA_C))
 OBJ_A=$(patsubst %.asm,%.obj,$(EXTRA_ASM))
 
 # --- pattern  -------------------------------------------------------------
 
-$(OBJ_C): %.obj: %.c
-	xc8 --chip=$(MODEL) \
+$(OBJ_C): %.p1: %.c
+	xc8 --chip=$(MODEL) --pass1 \
             -I../include -I/usr/local/include \
 	        -DMCLR=$(MCLR) $(SDCC_ARGS) $(CPPFLAGS) $(CFLAGS) -c $<
 
