@@ -11,7 +11,7 @@
 // Minor modifications for sdcc
 // --------------------------------------------------------------------------
 
-#include <picconfig.h>
+#include "picconfig.h"
 
 #ifndef __SOFTUART_H
 #define __SOFTUART_H
