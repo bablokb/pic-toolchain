@@ -5,16 +5,16 @@
 ; https://github.com/bablokb/pic-toolchain
 ;
 ; --------------------------------------------------------------------------
-#include   <P12f675.INC>
+#include "picconfig.inc"
 
         global  _delay_208, _delay_416, _delay_833
 
-        udata_ovr
-count	res 1
+PSECT   udata_bank0
+count:  DS 1
 
-        code
+PSECT   code
 
-_delay_208
+_delay_208:
         ;; cycle calculation:
         ;; - call 1
         ;; - init 4
@@ -22,18 +22,18 @@ _delay_208
         ;; - last decfsz 2
         ;; - return 1
         
-       	movlw D'41'
+        movlw 0x29         ; D'41'
 	movwf count
         nop
         nop
         
-loop1   nop
+loop1:  nop
         nop
         decfsz count, 1
         goto  loop1
         return
 
-_delay_416
+_delay_416:
         ;; cycle calculation:
         ;; - call 1
         ;; - init 2
@@ -41,16 +41,16 @@ _delay_416
         ;; - last decfsz 2
         ;; - return 1
         
-       	movlw D'83'
+        movlw 0x53         ; D'83'
 	movwf count
         
-loop2   nop
+loop2:  nop
         nop
         decfsz count, 1
         goto  loop2
         return
 
-_delay_833
+_delay_833:
         ;; cycle calculation:
         ;; - call 1
         ;; - init 4
@@ -58,12 +58,12 @@ _delay_833
         ;; - last decfsz 2
         ;; - return 1
         
-       	movlw D'166'
+        movlw 0xa6        ; D'166'
 	movwf count
         nop
         nop
         
-loop3   nop
+loop3:  nop
         nop
         decfsz count, 1
         goto  loop3
