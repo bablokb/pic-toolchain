@@ -11,7 +11,6 @@
 // Minor modifications for sdcc
 // --------------------------------------------------------------------------
 
-#include <pic12f675.h>
 #include <stdint.h> 
 #include "delay.h"
 #include "softuart.h"
