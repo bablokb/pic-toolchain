@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------
-// Sample project uart_tx
+// Sample project uart_rxtx
 //
 // Software uart
 // Source of uart-code:
@@ -11,7 +11,7 @@
 // Minor modifications for sdcc
 // --------------------------------------------------------------------------
 
-#include <pic12f675.h>
+#include "picconfig.h"
 
 #ifndef __SOFTUART_H
 #define __SOFTUART_H
@@ -29,10 +29,19 @@
 #endif
 
 #define DataBitCount          8              // no parity, no flow control
-#define UART_RX               GP2            // UART RX pin
-#define UART_TX               GP0            // UART TX pin
-#define UART_RX_DIR	      TRISIO2        // UART RX pin direction register
-#define UART_TX_DIR	      TRISIO0        // UART TX pin direction register
+#ifndef PIN_UART_RX
+  #define PIN_UART_RX 2
+#endif
+#ifndef GP_RX
+  #define GP_RX _CONCAT(GP,PIN_UART_RX)
+#endif
+
+#ifndef PIN_UART_TX
+  #define PIN_UART_TX 0
+#endif
+#ifndef GP_TX
+  #define GP_TX _CONCAT(GP,PIN_UART_TX)
+#endif
 
 //Function Declarations
 void          softuart_init(void);

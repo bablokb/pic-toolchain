@@ -40,6 +40,7 @@ static void init(void) {
 
 void main(void) {
   INIT_SPECIAL;
+  CLOCK_4MHZ;
   init();
   while (1) {
     softuart_print("Hallo\n");  // send message
