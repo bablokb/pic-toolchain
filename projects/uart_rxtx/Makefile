@@ -10,9 +10,9 @@
 PROJECT=uart_rxtx
 EXTRA_C=softuart.c
 EXTRA_ASM=delay.asm
-MODEL=12f675
 ARCH=pic14
 
 include ptc_rules.inc
+MCLR=ON
 
 # --------------------------------------------------------------------------
