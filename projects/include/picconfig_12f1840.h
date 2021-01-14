@@ -16,6 +16,7 @@
   #include "picconfig_default.h"
 
   #ifdef __SDCC
+    #define __12F1840
     // special initialization (empty)
     #define INIT_SPECIAL
 

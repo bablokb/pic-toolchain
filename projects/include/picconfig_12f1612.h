@@ -16,6 +16,7 @@
   #include "picconfig_default.h"
 
   #ifdef __SDCC
+    #define __12F1612
     // special initialization (empty)
     #define INIT_SPECIAL
     #define CONFIG_WORDS \
