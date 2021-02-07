@@ -47,7 +47,7 @@
 #define POWER_ON    0
 #define POWER_OFF   1
 
-CONFIG_WORDS
+CONFIG_WORDS;
 
 ////////////////////////////////////////////////////////////////////////
 // Intialize registers

@@ -20,7 +20,7 @@ extern void maxitime(uint8_t count);   // 250 mS
 #endif
 #define GP_LED _CONCAT(GP,PIN_LED)
 
-CONFIG_WORDS
+CONFIG_WORDS;
 
 // --- main program   --------------------------------------------------------
 

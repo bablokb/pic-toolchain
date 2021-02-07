@@ -19,7 +19,7 @@
     #define __12F675
     #define CONFIG_WORDS \
       __code uint16_t __at (_CONFIG) __configword = \
-        MCLR & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF;
+        MCLR & _PWRTE_ON & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _BODEN_OFF
     // special initialization
     #undef RP0
     #define INIT_SPECIAL \

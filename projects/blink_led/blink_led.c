@@ -13,7 +13,7 @@
 #endif
 #define GP_LED _CONCAT(GP,PIN_LED)
 
-CONFIG_WORDS
+CONFIG_WORDS;
 
 // --- uncalibrated delay   --------------------------------------------------
 

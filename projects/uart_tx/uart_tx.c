@@ -17,7 +17,7 @@
 #include "softuart.h"
 #include "quarz4MHz.h"
 
-CONFIG_WORDS
+CONFIG_WORDS;
 
 ////////////////////////////////////////////////////////////////////////
 // Intialize registers

@@ -24,7 +24,7 @@
         MCLR & _PWRTE_ON & _CLKOUTEN_OFF & _BOREN_OFF & _FOSC_INTOSC; \
       __code uint16_t __at (_CONFIG2) __configword2 = \
         _LVP_OFF & _DEBUG_OFF & _WRT_OFF; \
-      __code uint16_t __at (_CONFIG3) __configword3 = _WDTE_OFF;
+      __code uint16_t __at (_CONFIG3) __configword3 = _WDTE_OFF
 
     #ifndef NOT_GPPU
       #define NOT_GPPU NOT_WPUEN

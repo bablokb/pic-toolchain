@@ -29,7 +29,7 @@
 #endif
 #define GP_OFF _CONCAT(GP,PIN_OFF)
 
-CONFIG_WORDS
+CONFIG_WORDS;
 
 ////////////////////////////////////////////////////////////////////////
 // Intialize registers
