@@ -8,6 +8,7 @@
 # --------------------------------------------------------------------------
 
 default:
+	@echo "make config: configure project"
 	@echo "make build:  create $(PROJECT).hex"
 	@echo "make flash:  build and flash $(PROJECT).hex to PIC using PICKitPlus"
 	@echo "make flash2: build and flash $(PROJECT).hex to PIC using pk2cmd"
@@ -37,12 +38,12 @@ tc.mk:
 	@if [ -z "$(TC)" ]; then \
           echo "toolchain $$TC undefined, aborting!"; rm -f tc.mk; exit 3; \
 	else \
-	  echo "include ptc_rules_$(TC).inc" > tc.mk; \
+	  echo -e "include ptc_rules_$(TC).inc\nTC=$(TC)" > tc.mk; \
 	fi
 
 model.mk:
 	@echo -en "creating model.mk ... "
-	@if [ -z "$(MODEL)" ]; then pk2cmd -p | \
+	@if [ -z "$(MODEL)" -o "$(MODEL)" = "auto" ]; then pk2cmd -p | \
 	  sed -ne '/Found part/s/.*Found part PIC\([^.]*\)\./MODEL = \L\1/p' > \
 	    model.mk; \
 	  if [ ! -s model.mk ]; then \
@@ -62,6 +63,9 @@ mcheck:
 picconfig.h:
 	@echo "creating picconfig.h"
 	@echo '#include "picconfig_$(MODEL).h"' > picconfig.h
+
+config: model.mk
+	@echo -e "project configuration:\n\tMODEL=$(MODEL)\n\tTC=$(TC)"
 
 build: mcheck picconfig.h picconfig.inc $(PROJECT).hex
 
