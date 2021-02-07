@@ -8,11 +8,12 @@
 # --------------------------------------------------------------------------
 
 default:
-	@echo "make config: configure project"
-	@echo "make build:  create $(PROJECT).hex"
-	@echo "make flash:  build and flash $(PROJECT).hex to PIC using PICKitPlus"
-	@echo "make flash2: build and flash $(PROJECT).hex to PIC using pk2cmd"
-	@echo "make clean:  remove intermediate files"
+	@echo "make config:    configure project"
+	@echo "make build:     create $(PROJECT).hex"
+	@echo "make flash:     build and flash $(PROJECT).hex to PIC using PICKitPlus"
+	@echo "make flash2:    build and flash $(PROJECT).hex to PIC using pk2cmd"
+	@echo "make clean:     remove intermediate files"
+	@echo "make distclean: remove all generated files"
 
 # --- configuration   ------------------------------------------------------
 
@@ -74,3 +75,6 @@ flash: $(PROJECT).hex
 
 flash2: $(PROJECT).hex
 	pk2cmd -Ppic$(MODEL) -X -M -F $(PROJECT).hex
+
+distclean: clean
+	@rm -f tc.mk model.mk

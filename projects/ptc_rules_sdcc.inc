@@ -39,7 +39,7 @@ picconfig.inc:
 	@echo '#define PSECT' >> picconfig.inc
 
 clean:
-	@rm -f tc.mk model.mk picconfig.h picconfig.inc \
+	@rm -f picconfig.h picconfig.inc \
             *.o *.cod *.lst *.map *.hex \
               $(PROJECT).asm $(patsubst %.c,%.asm,$(EXTRA_C)) $(EXTRA_CLEAN)
 
