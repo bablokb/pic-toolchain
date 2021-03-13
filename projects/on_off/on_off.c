@@ -37,14 +37,18 @@ CONFIG_WORDS;
 static void init(void) {
   // configure registers
   __asm__ ("CLRWDT");                  // clear WDT even if WDT is disabled
-  bitset(TRISIO,PIN_ON);               // all GPIOs are output except: on/off
-  bitset(TRISIO,PIN_OFF);
-  WPU    = TRISIO;                     // pullups for on/off GPs
-  NOT_GPPU = 0;                        // enable pullups
-  IOC    = TRISIO;                     // IOC for on/off GPs
-
   ANSEL  = 0;                          // no analog input
   CMCON  = 0x07;                       // disable comparator for GP0-GP2
+
+  TRISIO = 0;
+  bitset(TRISIO,PIN_ON);               // all GPIOs are output except: on/off
+  bitset(TRISIO,PIN_OFF);
+  bitset(WPU,PIN_ON);                  // pullups for on/off GPs
+  bitset(WPU,PIN_OFF);
+  NOT_GPPU = 0;                        // enable pullups
+
+  IOC_ENABLE(PIN_ON,A,IOC_NEG_EDGE);
+  IOC_ENABLE(PIN_OFF,A,IOC_NEG_EDGE);
 
   INTCON = 0;                          // clear interrupt flag bits
   GP_LED = 0;                          // turn off LED
@@ -59,10 +63,11 @@ static void isr(void) __interrupt 0 {
   if (GPIF) {
     if (!GP_ON) {
       GP_LED = 1;      // turn on LED
+      IOC_CLEAR(PIN_ON,A);
     } else if (!GP_OFF) {
       GP_LED = 0;      // turn off LED
+      IOC_CLEAR(PIN_OFF,A);
     }
-    GPIF   = 0;    // clear IOC interrupt flag
   }
 }
 
