@@ -20,7 +20,7 @@
 #define GP_LED _CONCAT(GP,PIN_LED)
 
 #ifndef PIN_ON
-  #define PIN_ON 2
+  #define PIN_ON 0
 #endif
 #define GP_ON _CONCAT(GP,PIN_ON)
 
