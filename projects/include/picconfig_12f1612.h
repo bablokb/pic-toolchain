@@ -15,6 +15,17 @@
 
   #include "picconfig_default.h"
 
+  // IOC-macros
+  #define IOC_ENABLE(pin,port,edge) \
+    if (edge & IOC_POS_EDGE) { \
+      bitset(IOC##port##P,pin); \
+    } \
+    if (edge & IOC_NEG_EDGE) { \
+      bitset(IOC##port##N,pin); \
+  }
+  #define IOC_CLEAR(pin,port) \
+    bitclear(IOC##port##F,pin);
+
   #ifdef __SDCC
     #define __12F1612
     // special initialization (empty)

@@ -16,6 +16,10 @@
   #define bitread(var, bitno)  ((var) & (1UL << (bitno)))
   #define bitclear(var, bitno) ((var) &= ~(1UL << (bitno)))
 
+  #define IOC_POS_EDGE 0b01
+  #define IOC_NEG_EDGE 0b10
+  #define IOC_EDGE     0b11
+
   #ifdef __SDCC
     #include <pic14regs.h>
     #ifndef asm

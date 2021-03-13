@@ -15,6 +15,10 @@
 
   #include "picconfig_default.h"
 
+  // IOC-macros (12F675 has only global IOC on a single port)
+  #define IOC_ENABLE(pin,port,edge) bitset(IOC,pin)
+  #define IOC_CLEAR(pin,port)       bitclear(IOC,pin);
+
   #ifdef __SDCC
     #define __12F675
     #define CONFIG_WORDS \
