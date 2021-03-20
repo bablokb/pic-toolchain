@@ -33,14 +33,14 @@
   #define PIN_UART_RX 2
 #endif
 #ifndef GP_RX
-  #define GP_RX _CONCAT(GP,PIN_UART_RX)
+  #define GP_RX _CONCAT(RA,PIN_UART_RX)
 #endif
 
 #ifndef PIN_UART_TX
   #define PIN_UART_TX 0
 #endif
 #ifndef GP_TX
-  #define GP_TX _CONCAT(GP,PIN_UART_TX)
+  #define GP_TX _CONCAT(RA,PIN_UART_TX)
 #endif
 
 //Function Declarations

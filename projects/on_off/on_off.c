@@ -17,17 +17,17 @@
 #ifndef PIN_LED
   #define PIN_LED 5
 #endif
-#define GP_LED _CONCAT(GP,PIN_LED)
+#define GP_LED _CONCAT(RA,PIN_LED)
 
 #ifndef PIN_ON
   #define PIN_ON 0
 #endif
-#define GP_ON _CONCAT(GP,PIN_ON)
+#define GP_ON _CONCAT(RA,PIN_ON)
 
 #ifndef PIN_OFF
   #define PIN_OFF 4
 #endif
-#define GP_OFF _CONCAT(GP,PIN_OFF)
+#define GP_OFF _CONCAT(RA,PIN_OFF)
 
 CONFIG_WORDS;
 
@@ -37,12 +37,12 @@ CONFIG_WORDS;
 static void init(void) {
   // configure registers
   __asm__ ("CLRWDT");                  // clear WDT even if WDT is disabled
-  ANSEL  = 0;                          // no analog input
+  ANSELA = 0;                          // no analog input
   CMCON  = 0x07;                       // disable comparator for GP0-GP2
 
-  TRISIO = 0;
-  bitset(TRISIO,PIN_ON);               // all GPIOs are output except: on/off
-  bitset(TRISIO,PIN_OFF);
+  TRISA = 0;
+  bitset(TRISA,PIN_ON);                // all GPIOs are output except: on/off
+  bitset(TRISA,PIN_OFF);
   bitset(WPU,PIN_ON);                  // pullups for on/off GPs
   bitset(WPU,PIN_OFF);
   NOT_GPPU = 0;                        // enable pullups

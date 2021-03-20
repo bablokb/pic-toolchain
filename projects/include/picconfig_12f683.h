@@ -43,5 +43,13 @@
   // run at 4MHz (empty, since it is the default)
   #define CLOCK_4MHZ
 
-  #define CMCON CMCON0
+  #define CM1CON0 CMCON0
+  #define ANSELA  ANSEL
+  #define TRISA   TRISIO
+  #define PORTA   GPIO
+  #define WPUA    WPU
+  #define IOCAN   IOC
+  #define IOCIE   GPIE
+  #define IOCIF   GPIF
+  #define RA      GP
 #endif

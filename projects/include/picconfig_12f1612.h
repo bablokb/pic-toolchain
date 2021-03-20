@@ -60,20 +60,4 @@
   // run at 4MHz
   #define CLOCK_4MHZ \
     OSCCONbits.IRCF = 0b1101;                 // run at 4MHz
-
-  #define CMCON    CM1CON0
-  #define ANSEL    ANSELA
-  #define TRISIO   TRISA
-  #define GPIO     PORTA
-  #define WPU      WPUA
-  #define IOC      IOCAN
-  #define GPIE     IOCIE
-  #define GPIF     IOCIF
-  #define GP0      RA0
-  #define GP1      RA1
-  #define GP2      RA2
-  #define GP3      RA3
-  #define GP4      RA4
-  #define GP5      RA5
-  
 #endif

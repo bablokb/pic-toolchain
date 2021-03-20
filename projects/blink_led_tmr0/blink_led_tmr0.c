@@ -15,7 +15,7 @@
 #ifndef PIN_LED
   #define PIN_LED 5
 #endif
-#define GP_LED _CONCAT(GP,PIN_LED)
+#define GP_LED _CONCAT(RA,PIN_LED)
 
 CONFIG_WORDS;
 
@@ -58,8 +58,8 @@ static void init(void) {
   // configure registers
 
   __asm__ ("CLRWDT");  // clear WDT even if WDT is disabled
-  ANSEL    = 0;        // no analog input
-  TRISIO   = 0;        // all GPIOs are output
+  ANSELA   = 0;        // no analog input
+  TRISA    = 0;        // all GPIOs are output
   CMCON    = 0x07;     // disable comparator for GP0-GP2
   NOT_GPPU = 1;        // no pullups
   T0CS     = 0;        // clear to enable timer mode

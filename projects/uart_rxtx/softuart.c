@@ -18,9 +18,9 @@
 // --------------------------------------------------------------------------
 
 void softuart_init(void)	{
-  bitset(TRISIO,PIN_UART_RX);      // input
-  bitclear(TRISIO,PIN_UART_TX);    // output
-  GP_TX = 1;                       // TX pin is high in idle state
+  bitset(TRISA,PIN_UART_RX);      // input
+  bitclear(TRISA,PIN_UART_TX);    // output
+  GP_TX = 1;                      // TX pin is high in idle state
 }
 
 // --------------------------------------------------------------------------

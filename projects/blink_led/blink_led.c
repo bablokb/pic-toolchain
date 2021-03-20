@@ -11,7 +11,7 @@
 #ifndef PIN_LED
   #define PIN_LED 5
 #endif
-#define GP_LED _CONCAT(GP,PIN_LED)
+#define GP_LED _CONCAT(RA,PIN_LED)
 
 CONFIG_WORDS;
 
@@ -29,7 +29,7 @@ void delay(uint16_t iterations) {
 void main(void) {
   INIT_SPECIAL;
   CLOCK_4MHZ;
-  TRISIO = 0;
+  TRISA = 0;
   while (1) {
     GP_LED = 1;       // LED on
     delay(30000);     // ~500ms @ 4MHz

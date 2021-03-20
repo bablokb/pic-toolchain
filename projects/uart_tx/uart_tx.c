@@ -26,7 +26,7 @@ static void init(void) {
   // configure registers
 
   __asm__ ("CLRWDT");            // clear WDT even if WDT is disabled
-  ANSEL  = 0;                    // no analog input
+  ANSELA = 0;                    // no analog input
   ADCON0 = 0;                    // no A/D converter
   VRCON  = 0;                    // no voltage reference
   CMCON  = 0x07;                 // disable comparator for GP0-GP2

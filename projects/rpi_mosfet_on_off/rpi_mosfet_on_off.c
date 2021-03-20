@@ -21,27 +21,27 @@
 #ifndef PIN_FROM_PI
   #define PIN_FROM_PI 0
 #endif
-#define GP_FROM_PI _CONCAT(GP,PIN_FROM_PI)
+#define GP_FROM_PI _CONCAT(RA,PIN_FROM_PI)
 
 #ifndef PIN_TO_PI
   #define PIN_TO_PI 1
 #endif
-#define GP_TO_PI _CONCAT(GP,PIN_TO_PI)
+#define GP_TO_PI _CONCAT(RA,PIN_TO_PI)
 
 #ifndef PIN_SIG2
   #define PIN_SIG2 2
 #endif
-#define GP_SIG2 _CONCAT(GP,PIN_SIG2)
+#define GP_SIG2 _CONCAT(RA,PIN_SIG2)
 
 #ifndef PIN_SIG1
   #define PIN_SIG1 4
 #endif
-#define GP_SIG1 _CONCAT(GP,PIN_SIG1)
+#define GP_SIG1 _CONCAT(RA,PIN_SIG1)
 
 #ifndef PIN_POWER
   #define PIN_POWER 5
 #endif
-#define GP_POWER _CONCAT(GP,PIN_POWER)
+#define GP_POWER _CONCAT(RA,PIN_POWER)
 
 #define BOOT_WAIT   20               // 5s = 20*250ms
 #define POWER_ON    0
@@ -55,17 +55,17 @@ CONFIG_WORDS;
 static void init(void) {
   // configure registers
   __asm__ ("CLRWDT");                  // clear WDT even if WDT is disabled
-  TRISIO   = (1<<PIN_FROM_PI) +
+  TRISA    = (1<<PIN_FROM_PI) +
     (1<<PIN_SIG1) + (1<<PIN_SIG2);     // GP4, GP2, GP0 are input
   WPU      = 
     (1<<PIN_SIG1) + (1<<PIN_SIG2);     // pullups for the GP4/GP2 pins
   NOT_GPPU = 0;                        // enable pullups
-  IOC      = TRISIO;                   // IOC for all input pins
+  IOC      = TRISA;                    // IOC for all input pins
 
-  ANSEL    = 0;                        // no analog input
+  ANSELA   = 0;                        // no analog input
   CMCON    = 0x07;                     // disable comparator for GP0-GP2
 
-  GPIO     = 0;                        // initial value of GPIOs
+  PORTA    = 0;                        // initial value of GPIOs
   GP_POWER = POWER_OFF;                //    except GP_POWER
   GP_TO_PI = 1;                        //    except GP_TO_PI
 
