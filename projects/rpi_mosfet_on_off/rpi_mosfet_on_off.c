@@ -63,7 +63,7 @@ static void init(void) {
   IOC      = TRISA;                    // IOC for all input pins
 
   ANSELA   = 0;                        // no analog input
-  CMCON    = 0x07;                     // disable comparator for GP0-GP2
+  CM1CON0  = 0x07;                     // disable comparator for GP0-GP2
 
   PORTA    = 0;                        // initial value of GPIOs
   GP_POWER = POWER_OFF;                //    except GP_POWER

@@ -37,8 +37,8 @@ CONFIG_WORDS;
 static void init(void) {
   // configure registers
   __asm__ ("CLRWDT");                  // clear WDT even if WDT is disabled
-  ANSELA = 0;                          // no analog input
-  CMCON  = 0x07;                       // disable comparator for GP0-GP2
+  ANSELA  = 0;                         // no analog input
+  CM1CON0 = 0x07;                      // disable comparator for GP0-GP2
 
   TRISA = 0;
   bitset(TRISA,PIN_ON);                // all GPIOs are output except: on/off

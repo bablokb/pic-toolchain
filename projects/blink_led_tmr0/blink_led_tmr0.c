@@ -60,7 +60,7 @@ static void init(void) {
   __asm__ ("CLRWDT");  // clear WDT even if WDT is disabled
   ANSELA   = 0;        // no analog input
   TRISA    = 0;        // all GPIOs are output
-  CMCON    = 0x07;     // disable comparator for GP0-GP2
+  CM1CON0  = 0x07;     // disable comparator for GP0-GP2
   NOT_GPPU = 1;        // no pullups
   T0CS     = 0;        // clear to enable timer mode
   PSA      = 0;        // clear to assign prescaler to TMRO
