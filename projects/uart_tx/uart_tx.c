@@ -27,8 +27,6 @@ static void init(void) {
 
   __asm__ ("CLRWDT");            // clear WDT even if WDT is disabled
   ANSELA  = 0;                   // no analog input
-  ADCON0  = 0;                   // no A/D converter
-  VRCON   = 0;                   // no voltage reference
   CM1CON0 = 0x07;                // disable comparator for GP0-GP2
 
   softuart_init();               // configure RX,TX pins (GP2,GP0)
