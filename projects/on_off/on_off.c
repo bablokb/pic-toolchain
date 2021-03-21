@@ -43,8 +43,8 @@ static void init(void) {
   TRISA = 0;
   bitset(TRISA,PIN_ON);                // all GPIOs are output except: on/off
   bitset(TRISA,PIN_OFF);
-  bitset(WPU,PIN_ON);                  // pullups for on/off GPs
-  bitset(WPU,PIN_OFF);
+  bitset(WPUA,PIN_ON);                 // pullups for on/off GPs
+  bitset(WPUA,PIN_OFF);
   NOT_GPPU = 0;                        // enable pullups
 
   IOC_ENABLE(PIN_ON,A,IOC_NEG_EDGE);

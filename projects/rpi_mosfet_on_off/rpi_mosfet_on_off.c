@@ -57,7 +57,7 @@ static void init(void) {
   __asm__ ("CLRWDT");                  // clear WDT even if WDT is disabled
   TRISA    = (1<<PIN_FROM_PI) +
     (1<<PIN_SIG1) + (1<<PIN_SIG2);     // GP4, GP2, GP0 are input
-  WPU      = 
+  WPUA     =
     (1<<PIN_SIG1) + (1<<PIN_SIG2);     // pullups for the GP4/GP2 pins
   NOT_GPPU = 0;                        // enable pullups
   IOC      = TRISA;                    // IOC for all input pins
