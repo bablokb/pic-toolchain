@@ -52,7 +52,7 @@ static void init(void) {
 
   INTCON = 0;                          // clear interrupt flag bits
   GP_LED = 0;                          // turn off LED
-  GPIE   = 1;                          // port-change enable
+  IOCIE  = 1;                          // port-change enable
   GIE    = 1;                          // global interrupt enable
 }
 
@@ -60,7 +60,7 @@ static void init(void) {
 // Interrupt service routine
 
 static void isr(void) __interrupt 0 {
-  if (GPIF) {
+  if (IOCIF) {
     if (!GP_ON) {
       GP_LED = 1;      // turn on LED
       IOC_CLEAR(PIN_ON,A);

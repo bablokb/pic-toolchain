@@ -60,7 +60,7 @@ static void init(void) {
   WPUA     =
     (1<<PIN_SIG1) + (1<<PIN_SIG2);     // pullups for the GP4/GP2 pins
   NOT_GPPU = 0;                        // enable pullups
-  IOC      = TRISA;                    // IOC for all input pins
+  IOCAN    = TRISA;                    // IOC for all input pins
 
   ANSELA   = 0;                        // no analog input
   CM1CON0  = 0x07;                     // disable comparator for GP0-GP2
@@ -70,7 +70,7 @@ static void init(void) {
   GP_TO_PI = 1;                        //    except GP_TO_PI
 
   INTCON   = 0;                        // clear interrupt flag bits
-  GPIE     = 1;                        // enable IOC
+  IOCIE    = 1;                        // enable IOC
   GIE      = 1;                        // global interrupt enable
 }
 
@@ -78,7 +78,7 @@ static void init(void) {
 // Interrupt service routine
 
 static void isr(void) __interrupt 0 {
-  if (GPIF) {                            // interrupt-on-change
+  if (IOCIF) {                           // interrupt-on-change
     if (!GP_SIG1||!GP_SIG2) {            // SIG1 or SIG2 is low
       if (GP_POWER == POWER_OFF) {       // power is off:
         GP_POWER = POWER_ON;             //   turn power on and
@@ -90,7 +90,7 @@ static void isr(void) __interrupt 0 {
       GP_POWER = POWER_OFF;              // turn power off
       GP_TO_PI = 1;                      // and restore initial state
     }
-    GPIF = 0;                            // clear IOC interrupt flag
+    IOCIF = 0;                           // clear IOC interrupt flag
   }
   maxitime(1);  // wait 250ms (debounce)
 }
