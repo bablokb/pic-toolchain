@@ -28,7 +28,7 @@ $(OBJ_A): %.obj: %.asm
                 -p -c $<
 
 $(PROJECT).hex: $(OBJ_C) $(OBJ_A)
-	xc8 --chip=$(MODEL) \
+	xc8 --chip=$(MODEL) -M$(PROJECT).map \
               -o$(PROJECT).hex $(OBJ_C) $(OBJ_A)
 
 # --- targets   ------------------------------------------------------------
