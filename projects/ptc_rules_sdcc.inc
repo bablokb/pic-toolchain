@@ -20,7 +20,8 @@ OBJS=$(PROJECT).o $(patsubst %.asm,%.o,$(EXTRA_ASM)) \
 .c.o:
 	sdcc --use-non-free -m$(ARCH) -p$(MODEL) \
             -I. -I../include -I /usr/local/include \
-	     -Wa -w1 -DMCLR=_MCLRE_$(MCLR) $(SDCC_ARGS) $(CPPFLAGS) $(CFLAGS) -c $<
+	     -Wa -w1 -D_PTC -DMCLR=_MCLRE_$(MCLR) \
+                $(SDCC_ARGS) $(CPPFLAGS) $(CFLAGS) -c $<
 
 $(patsubst %.asm,%.o,$(EXTRA_ASM)): %.o: %.asm
 	gpasm -p$(MODEL) -c $<

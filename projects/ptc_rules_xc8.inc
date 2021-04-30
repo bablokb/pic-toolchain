@@ -20,7 +20,7 @@ OBJ_A=$(patsubst %.asm,%.obj,$(EXTRA_ASM))
 $(OBJ_C): %.p1: %.c
 	xc8 --chip=$(MODEL) --pass1 \
             -I. -I../include -I/usr/local/include \
-	        -DMCLR=$(MCLR) $(SDCC_ARGS) $(CPPFLAGS) $(CFLAGS) -c $<
+	        -DMCLR=$(MCLR) -D_PTC $(SDCC_ARGS) $(CPPFLAGS) $(CFLAGS) -c $<
 
 $(OBJ_A): %.obj: %.asm
 	xc8 --chip=$(MODEL) \
