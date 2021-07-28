@@ -44,7 +44,12 @@
     #endif
 
   #elif defined __XC8
-    #pragma config MCLRE = MCLR, PWRTE = ON, WDTE = OFF, FOSC = INTOSC
+    #pragma config PWRTE = ON, WDTE = OFF, FOSC = INTOSC
+    #if MCLR==ON
+      #pragma config MCLRE = ON
+    #else
+      #pragma config MCLRE = OFF
+    #endif
     #pragma config CLKOUTEN = OFF, BOREN = OFF, LVP = OFF
 
     #ifndef NOT_GPPU
